@@ -29,7 +29,7 @@ inicial.get('', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 inicial.get('/hola', (req: Request, res: Response) => {
-  res.send(`Hola Mundo...!`);
+  res.send(`<h1>Hola Mundo...!</h1>`);
 });
 
 inicial.get('/conectdb', (req: Request, res: Response, next: NextFunction) => {
