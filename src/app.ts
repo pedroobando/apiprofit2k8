@@ -4,6 +4,7 @@ import * as errorhandler from 'strong-error-handler';
 import {movies} from './routes/movies';
 import {actors} from './routes/actors';
 import {inicial} from './routes/database';
+import {sucursals} from './routes/sucursal';
 import { Response, Request, NextFunction, ErrorRequestHandler } from "express";
 
 export const app = express();
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 app.use('/', inicial);
 app.use('/movies', movies);
 app.use('/actors', actors);
+app.use('/sucursales', sucursals);
 
 
 
