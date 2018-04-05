@@ -1,8 +1,9 @@
 import {
   Model, Table, BelongsToMany, Scopes, CreatedAt, UpdatedAt,
-  Column, PrimaryKey, AllowNull, Default, Unique 
+  Column, PrimaryKey, AllowNull, Default, Unique, IsUUID 
 } from "sequelize-typescript";
 import { DataTypeUUID } from "sequelize";
+
 
 // import {Movie} from "./Movie";
 // import {MovieActor} from "./MovieActor";
@@ -23,706 +24,709 @@ export class Sucursal extends Model<Sucursal> {
 
   @PrimaryKey
   @Column
-  @AllowNull(false)
   'co_alma': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'alma_des': string;
 
-  @Column
   @Unique
   @Default(0)
   @AllowNull(false)
+  @Column
   'nro_fact': number;
   
-  @Column
   @AllowNull(false)
+  @Column
   'num_fac_ini': number;
 
-  @Column
   @AllowNull(false)
+  @Column
   'num_fac_fin': number;
 
-  @Column
   @Default('')
   @AllowNull(false)
+  @Column
   'campo1': string;
 
-  @Column
   @Default('')
   @AllowNull(false)
+  @Column
   'campo2': string;
 
-  @Column
   @Default('')
   @AllowNull(false)
+  @Column
   'campo3': string;
 
-  @Column
   @Default('')
   @AllowNull(false)
+  @Column
   'campo4': string;
 
-  @Column
   @Default('00')
   @AllowNull(false)
+  @Column
   'co_us_in': string;
 
-  @Column
   @Default(_dateparse)
+  @Column
   'fe_us_in': Date;
 
-  @Column
   @Default('00')
   @AllowNull(false)
+  @Column
   'co_us_mo': string;
 
-  @Column
   @Default(_dateparse)
+  @Column
   'fe_us_mo': Date;
 
-  @Column
   @Default('00')
   @AllowNull(false)
+  @Column
   'co_us_el': string;
 
-  @Column
   @Default(_dateparse)
+  @Column
   'fe_us_el': Date;
 
-  @Column
   @Default('')
   @AllowNull(false)
+  @Column
   'revisado': string;
 
-  @Column
   @Default('')
   @AllowNull(false)
+  @Column
   'trasnfe': string;
 
-  @Column
   @Default('02')
   @AllowNull(false)
+  @Column
   'co_sucu': string;
 
-  @Column
   @AllowNull(false)
-  'rowguid': DataTypeUUID;
-
+  @IsUUID(4)
   @Column
+  'rowguid': string;
+
   @AllowNull(false)
   @Default(0)
+  @Column
   'nc_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nd_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'ajus_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'tras_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'fisi_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'num_kit': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'genk_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'cotc_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'ped_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'devc_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nde_num': number;
   
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'ndd_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'post_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'cfxg_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'chdv_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'ndr_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'postcppnum': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'ccxg_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'chdvcppnum': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'girocppnum': number;
   
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nccpp_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'ndcpp_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'retencppnum': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'pg_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'aju_posm': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'aju_posa': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'aju_negm': number;
   
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'aju_nega': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'aju_posmc': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'aju_negmc': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'pventa': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'turnosic': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'plv_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'plc_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'tabislr': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'imp_num': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'rma_cli': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'rma_prov': number;
   
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'rma_entc': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'rma_entp': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'rma_regs': number;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'fact_s1': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'fact_s2': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'fact_s3': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'fact_s4': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'fact_s5': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'nde_s1': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'nde_s2': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'nde_s3': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'nde_s4': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'nde_s5': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'nc_s1': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'nc_s2': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'nc_s3': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'nc_s4': string;
 
-  @Column
   @AllowNull(false)
   @Default('')
+  @Column
   'nc_s5': string;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'fact_f1': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'fact_f2': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'fact_f3': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'fact_f4': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nde_f1': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nde_f2': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nde_f3': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nde_f4': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nc_f1': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nc_f2': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nc_f3': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nc_f4': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nd_f1': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nd_f2': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nd_f3': number;
 
-  @Column
   @AllowNull(false)
   @Default(0)
+  @Column
   'nd_f4': number;
   
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'fact_p1': number;
 
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'fact_p2': number;
 
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'fact_p3': number;
 
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'fact_p4': number;
 
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'fact_p5': number;
   
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'nde_p1': number;
 
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'nde_p2': number;
 
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'nde_p3': number;
 
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'nde_p4': number;
 
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'nde_p5': number;
     
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'nc_p1': number;
 
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'nc_p2': number;
 
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'nc_p3': number;
 
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'nc_p4': number;
 
-  @Column
   @AllowNull(false)
   @Default(1)
+  @Column
   'nc_p5': number;
+
+  @AllowNull(false)
+  @Default(1)
+  @Column
+  'nd_p1': number;
+
+  @AllowNull(false)
+  @Default(1)
+  @Column
+  'nd_p2': number;
+
+  @AllowNull(false)
+  @Default(1)
+  @Column
+  'nd_p3': number;
+
+  @AllowNull(false)
+  @Default(1)
+  @Column
+  'nd_p4': number;
+
+  @AllowNull(false)
+  @Default(1)
+  @Column
+  'nd_p5': number;
+
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  'fact_num2': number;
+
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  'fact_num3': number;
+
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  'fact_num4': number;
+
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  'fact_num5': number;
+
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  'nde_num2': number;
+
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  'nde_num3': number;
+
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  'nde_num4': number;
+
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  'nde_num5': number;
   
-  nd_p1: {
-    type: DataTypes.INTEGER,
-    defaultValue: 1
-  },
-  nd_p2: {
-    type: DataTypes.INTEGER,
-    defaultValue: 1
-  },
-  nd_p3: {
-    type: DataTypes.INTEGER,
-    defaultValue: 1
-  },
-  nd_p4: {
-    type: DataTypes.INTEGER,
-    defaultValue: 1
-  },
-  nd_p5: {
-    type: DataTypes.INTEGER,
-    defaultValue: 1
-  },
-  fact_num2: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  fact_num3: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  fact_num4: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  fact_num5: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  nde_num2: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },    
-  nde_num3: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },    
-  nde_num4: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },    
-  nde_num5: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  nd_num2: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },    
-  nd_num3: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },    
-  nd_num4: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },    
-  nd_num5: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  serie2: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: 0
-  },
-  serie3: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: 0
-  },
-  serie4: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: 0
-  },
-  serie5: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: 0
-  },
-  emp_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  dmc_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  tax_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  ced_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  ent_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  cie_num: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0
-  },
-  odp_num: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0
-  },
-  req_num: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0
-  },
-  dev_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  exp_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  inp_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  cost_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  par_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  esc_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  pla_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  men_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  dist_num: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
-  exp_numi: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  }
-
-  // @Column
-  // 'alma_des': string;
-  // @Column
-  // 'alma_des': string;
-  // @Column
-  // 'alma_des': string;
-  // @Column
-  // 'alma_des': string;
-  // @BelongsToMany(() => Movie, () => MovieActor)
-  // movies?: Movie[];
-  @CreatedAt
+  @AllowNull(false)
+  @Default(0)
   @Column
-  createdAt: Date;
+  'nd_num2': number;
 
-  @UpdatedAt
+  @AllowNull(false)
+  @Default(0)
   @Column
-  updatedAt: Date;
+  'nd_num3': number;
+
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  'nd_num4': number;
+
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  'nd_num5': number;
+
+  @Default(false)
+  @Column
+  'serie2': boolean;
+
+  @Default(false)
+  @Column
+  'serie3': boolean;
+
+  @Default(false)
+  @Column
+  'serie4': boolean;
+
+  @Default(false)
+  @Column
+  'serie5': boolean;
+
+  @Default(0)
+  @Column
+  'emp_num': number;
+
+  @Default(0)
+  @Column
+  'dmc_num': number;
+
+  @Default(0)
+  @Column
+  'tax_num': number;
+
+  @Default(0)
+  @Column
+  'ced_num': number;
+
+  @Default(0)
+  @Column
+  'ent_num': number;
+
+  @Default(0)
+  @Column
+  'cie_num': number;
+
+  @Default(0)
+  @Column
+  'odp_num': number;
+
+  @Default(0)
+  @Column
+  'req_num': number;
+
+  @Default(0)
+  @Column
+  'dev_num': number;
+
+  @Default(0)
+  @Column
+  'exp_num': number;
+
+  @Default(0)
+  @Column
+  'inp_num': number;
+
+  @Default(0)
+  @Column
+  'cost_num': number;
+
+  @Default(0)
+  @Column
+  'par_num': number;
+
+  @Default(0)
+  @Column
+  'esc_num': number;
+
+  @Default(0)
+  @Column
+  'pla_num': number;
+
+  @Default(0)
+  @Column
+  'men_num': number;
+
+  @Default(0)
+  @Column
+  'dist_num': number;
+
+  @Default(0)
+  @Column
+  'exp_numi': number;
+  
+  // @CreatedAt
+  // @Column
+  // createdAt: Date;
+
+  // @UpdatedAt
+  // @Column
+  // updatedAt: Date;
 
   static scope(name: string = 'defaultScope'): typeof Sucursal {
     return super.scope.call(this, name);

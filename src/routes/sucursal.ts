@@ -1,10 +1,11 @@
-import {Router} from 'express';
+import {Router, Request, Response, NextFunction} from 'express';
 import {Sucursal} from '../models/Sucursal';
+
 // import {MovieActor} from '../models/MovieActor';
 
 export const sucursals = Router();
 
-sucursals.get('/', async (req, res, next) => {
+sucursals.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     // res.json();
     res.json({
