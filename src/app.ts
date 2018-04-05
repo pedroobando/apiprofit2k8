@@ -10,7 +10,7 @@ import { Response, Request, NextFunction, ErrorRequestHandler } from "express";
 export const app = express();
 
 // middleware for parsing application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: false}));
 
 // middleware for json body parsing
 app.use(bodyParser.json({limit: '5mb'}));

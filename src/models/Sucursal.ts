@@ -1,12 +1,12 @@
 import {
   Model, Table, BelongsToMany, Scopes, CreatedAt, UpdatedAt,
-  Column, PrimaryKey, AllowNull, Default, Unique, IsUUID 
+  Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, HasMany
 } from "sequelize-typescript";
-import { DataTypeUUID } from "sequelize";
 
 
 // import {Movie} from "./Movie";
 // import {MovieActor} from "./MovieActor";
+import { Almacen } from './Almacen';
 // @Scopes({
 //   movies: {
 //     include: [
@@ -23,7 +23,9 @@ const _dateparse = new Date('01/01/1900');
 export class Sucursal extends Model<Sucursal> {
 
   @PrimaryKey
-  @Column
+  @Column({
+    type: DataType.CHAR(6)
+  })
   'co_alma': string;
 
   @AllowNull(false)
@@ -728,7 +730,18 @@ export class Sucursal extends Model<Sucursal> {
   // @Column
   // updatedAt: Date;
 
+  @HasMany(() => Almacen, 'co_alma')
+    almacens: Almacen[];
+
   static scope(name: string = 'defaultScope'): typeof Sucursal {
     return super.scope.call(this, name);
   }
 }
+
+
+
+// sucursal.associate = function(models) {
+//   // associations can be defined here
+//   sucursal.hasMany(models.almacen,  {as: 'almacen', foreignKey: 'co_alma'}) //, {as: 'Measure', foreignKey: 'id'})
+//   // lineaProducto.belongsTo(models.recipelineaProducto)
+// }
