@@ -1,11 +1,7 @@
 import {
   Model, Table, BelongsToMany, Scopes, CreatedAt, UpdatedAt,
-  Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, HasMany
-} from "sequelize-typescript";
+  Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, HasMany, DefaultScope } from 'sequelize-typescript';
 
-
-// import {Movie} from "./Movie";
-// import {MovieActor} from "./MovieActor";
 import { Almacen } from './Almacen';
 // @Scopes({
 //   movies: {
@@ -18,7 +14,25 @@ import { Almacen } from './Almacen';
 //   },
 // })
 
-const _dateparse = new Date('01/01/1900');
+const _dateparse = new Date();
+// const _rowGuidExport =  'caa3e610-10af-4798-b1b7-ab38abd8ecfc';
+const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
+
+
+@Scopes({
+  almacens: {
+    include: [
+      {
+        model: () => Almacen,
+        through: {attributes: []},
+      },
+    ],
+  },
+})
+
+@DefaultScope({
+  attributes: ['co_alma', 'alma_des', 'co_sucu', 'campo1', 'campo2', 'campo3', 'campo4']
+})
 @Table({tableName: 'almacen'})
 export class Sucursal extends Model<Sucursal> {
 
@@ -29,6 +43,7 @@ export class Sucursal extends Model<Sucursal> {
   'co_alma': string;
 
   @AllowNull(false)
+  // @Default('')
   @Default('')
   @Column
   'alma_des': string;
@@ -40,14 +55,16 @@ export class Sucursal extends Model<Sucursal> {
   'nro_fact': number;
   
   @AllowNull(false)
+  @Default(0)
   @Column
   'num_fac_ini': number;
 
   @AllowNull(false)
+  @Default(0)
   @Column
   'num_fac_fin': number;
 
-  @Default('')
+  @Default("")
   @AllowNull(false)
   @Column
   'campo1': string;
@@ -109,8 +126,9 @@ export class Sucursal extends Model<Sucursal> {
   @Column
   'co_sucu': string;
 
-  @AllowNull(false)
   @IsUUID(4)
+  @AllowNull(false)
+  @Default(_rowGuidExport)
   @Column
   'rowguid': string;
 
@@ -123,7 +141,7 @@ export class Sucursal extends Model<Sucursal> {
   @Default(0)
   @Column
   'nd_num': number;
-
+    
   @AllowNull(false)
   @Default(0)
   @Column

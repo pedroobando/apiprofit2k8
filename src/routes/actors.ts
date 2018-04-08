@@ -26,13 +26,13 @@ actors.post('/:id/movies/:movieId', async (req, res, next) => {
 
 actors.get('', async (req, res, next) => {
   try {
-    // res.json();
+    res.json();
     res.json({
       status: 200,
       request_url: req.originalUrl,
       message: await Actor.scope(req.query['scope']).findAll()
     });
-
+    // res.json(await Actor.scope(req.query['scope']).findAll());
   } catch (e) {
     next(e);
   }

@@ -11,12 +11,11 @@ sucursals.get('/', async (req: Request, res: Response, next: NextFunction) => {
     res.json({
       status: 200,
       request_url: req.originalUrl,
-      message: await Sucursal.scope(req.query['scope']).findAndCountAll({
-        attributes: ['co_alma', 'alma_des']
-        })
+      message: await Sucursal.scope(req.query['scope']).findAll()
     });
-
+    
   } catch (e) {
+    console.log(e);
     next(e);
   }
 });

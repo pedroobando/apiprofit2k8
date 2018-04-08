@@ -5,7 +5,6 @@ export const sequelize = new Sequelize({
   database: 'movies',
   username: 'postgres',
   password: 'postgres',
-  host: '10.20.180.4',
+  // host: '10.20.180.4',
   modelPaths: [__dirname + '/models']
 });
-
