@@ -749,7 +749,7 @@ export class Sucursal extends Model<Sucursal> {
   // updatedAt: Date;
 
   @HasMany(() => Almacen, 'co_alma')
-    almacens: Almacen[];
+    almacenes: Almacen[];
 
   static scope(name: string = 'defaultScope'): typeof Sucursal {
     return super.scope.call(this, name);

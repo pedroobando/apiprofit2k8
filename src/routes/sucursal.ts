@@ -1,5 +1,6 @@
 import {Router, Request, Response, NextFunction} from 'express';
 import {Sucursal} from '../models/Sucursal';
+import {Almacen}  from '../models/Almacen';
 
 // import {MovieActor} from '../models/MovieActor';
 
@@ -11,7 +12,7 @@ sucursals.get('/', async (req: Request, res: Response, next: NextFunction) => {
     res.json({
       status: 200,
       request_url: req.originalUrl,
-      message: await Sucursal.scope(req.query['scope']).findAll()
+      message: await Sucursal.scope(req.query['scope']).findAll({include: [Almacen]})
     });
     
   } catch (e) {
@@ -20,10 +21,14 @@ sucursals.get('/', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-sucursals.get('/:id', async (req, res, next) => {
+sucursals.get('/:id', async (req: Request, res: Response, next) => {
   try {
-    const actor = await Sucursal.scope(req.query['scope']).findById(req.params['id']);
-    res.json(actor);
+
+    const sucursal = await Sucursal.scope(req.query['scope']).findOne({
+      where: {co_alma: req.params.keyId},
+      include: [Almacen]
+    });
+    res.json(sucursal);
   } catch (e) {
     next(e);
   }

@@ -1,6 +1,6 @@
 import {
     Model, Table, BelongsToMany, Scopes, CreatedAt, UpdatedAt,
-    Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, BelongsTo 
+    Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, BelongsTo, DefaultScope
   } from "sequelize-typescript";
 import { Sucursal } from "./Sucursal";
  
@@ -8,6 +8,9 @@ import { Sucursal } from "./Sucursal";
 const _dateparse = new Date();
 const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
 
+@DefaultScope({
+  attributes: ['co_sub', 'des_sub', 'co_alma', 'campo1', 'campo2', 'campo3', 'campo4', 'noventa', 'nocompra', 'materiales', 'produccion']
+})
 @Table({tableName: 'sub_alma'})
 export class Almacen extends Model<Almacen> {
 
