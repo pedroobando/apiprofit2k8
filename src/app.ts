@@ -30,8 +30,6 @@ app.use('/movies', movies);
 app.use('/actors', actors);
 app.use('/sucursales', sucursals);
 
-
-
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response) {
   const errMensaje: string = 'HTTP 404 Not Found o HTTP 404 No encontrado';
