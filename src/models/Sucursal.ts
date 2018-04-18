@@ -48,7 +48,7 @@ export class Sucursal extends Model<Sucursal> {
   @Column
   'alma_des': string;
 
-  @Unique
+  // @Unique
   @Default(0)
   @AllowNull(false)
   @Column
