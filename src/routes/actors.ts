@@ -26,7 +26,6 @@ actors.post('/:id/movies/:movieId', async (req, res, next) => {
 
 actors.get('', async (req, res, next) => {
   try {
-    res.json();
     res.json({
       status: 200,
       request_url: req.originalUrl,

@@ -1,6 +1,6 @@
 import {Router, Request, Response, NextFunction} from 'express';
 import {Sucursal} from '../models/Sucursal';
-import {Almacen}  from '../models/Almacen';
+import {Almacen} from '../models/Almacen';
 
 // import {MovieActor} from '../models/MovieActor';
 
