@@ -17,7 +17,8 @@
     "reflect-metadata": "^0.1.10",
     "sequelize": "^4.23.0",
     "sequelize-typescript": "^0.6.3",
-    "strong-error-handler": "^2.3.0"
+    "strong-error-handler": "^2.3.0",
+    "tedious": "^2.3.1"
   },
   "devDependencies": {
     "@types/express": "^4.0.39",
@@ -28,4 +29,3 @@
     "typescript": "^2.7.0-dev.20171125"
   }
 }
-
