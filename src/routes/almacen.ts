@@ -2,24 +2,10 @@ import {Router, Request, Response, NextFunction} from 'express';
 import {Sucursal} from '../models/Sucursal';
 import {Almacen} from '../models/Almacen';
 
-export const sucursals = Router();
 const paginateSize: number = 40;
+export const almacens = Router();
 
-sucursals.get('/all', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    res.json({
-      status: 200,
-      request_url: req.originalUrl,
-      message: await Sucursal.scope(req.query['scope']).findAndCountAll()
-    });
-    
-  } catch (e) {
-    console.log(e);
-    next(e);
-  }
-});
-
-sucursals.get('/', async (req: Request, res: Response, next: NextFunction) => {
+almacens.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
     const filtername: string = !req.query.filtername ? '' : req.query.filtername.toUpperCase();
@@ -28,11 +14,12 @@ sucursals.get('/', async (req: Request, res: Response, next: NextFunction) => {
     const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
     const offset2 = limitPage * (activePage - 1);
 
-    const sucursales = await Sucursal.scope(req.query['scope']).findAndCountAll({
-        order: [['alma_des', order]],
+    const almacenes = await Almacen.scope(req.query['scope']).findAndCountAll({
+        order: [['des_sub', order]],
         limit: limitPage,
         offset: offset2,
-        where: { alma_des: {$like: `%${filtername}%`}}
+        where: { des_sub: {$like: `%${filtername}%`}},
+        include: [Sucursal]
       }).then((objectAll) => {
         const totalItems: number = objectAll.count;
         const totalPage: number = Math.ceil(objectAll.count / limitPage);
@@ -41,7 +28,7 @@ sucursals.get('/', async (req: Request, res: Response, next: NextFunction) => {
           _paginate(activePage, totalPage, totalItems, showItem));
       });
 
-    res.status(200).json(sucursales);
+    res.status(200).json(almacenes);
     
   } catch (e) {
     console.log(e);
@@ -50,7 +37,7 @@ sucursals.get('/', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-sucursals.get('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+almacens.get('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
     let numRequest: number = 0;
@@ -58,35 +45,42 @@ sucursals.get('/:keyId', async (req: Request, res: Response, next: NextFunction)
       return res.status(400).json(_clearObject({id: 0, name: '', active: false}));
     }
 
-    const sucursal = await Sucursal.scope(req.query['scope']).findOne({
-      where: { co_alma: Id},
-      include: [Almacen]
+    const almacenes = await Almacen.scope(req.query['scope']).findOne({
+      where: { co_sub: Id}
+    //   include: [Almacen]
     }).then((theObject) => {
       if (theObject) {
         numRequest = 200;
-        return {data: _clearObject(theObject), rows: _clearAlmacenAll(theObject.almacenes)};  
+        return {data: _clearObject(theObject)};  
       } else {
         numRequest = 404;
-        return {data: {co_alma: '0', name: ''}};
+        return {data: {co_sub: '0', name: ''}};
       }
     }).catch((err) => {
       console.log(err);
       res.status(500).json(_errorObject(err, '/'));
     });
-    res.status(numRequest).json(sucursal);
+    res.status(numRequest).json(almacenes);
   } catch (e) {
     next(e);
   }
 });
 
-sucursals.post('/', async (req: Request, res: Response, next: NextFunction) => {
+almacens.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const uuidv4 = require('uuid/v4');
-    await Sucursal.create({
-      co_alma: req.body.keyId,
-      alma_des: req.body.name,
-      co_sucu:  req.body.co_sucu,
-      nro_fact: req.body.nro_fact,
+    await Almacen.create({
+      co_sub: req.body.keyId,
+      des_sub: req.body.des_sub,
+      co_sucu: req.body.co_sucu,
+      co_lin: req.body.co_lin,
+      co_subl: req.body.co_subl,
+      campo1: req.body.campo1,
+      campo2: req.body.campo2,
+      campo3: req.body.campo3,
+      campo4: req.body.campo4,
+      uni_venta: req.body.uni_venta,
+      stock_act: req.body.stock_act,
       rowguid: uuidv4()
     }).then((theObject) => {
       res.sendStatus(201);
@@ -99,13 +93,13 @@ sucursals.post('/', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-sucursals.put('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+almacens.put('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
-    await Sucursal.update(req.body,
+    await Almacen.update(req.body,
     {
       where: {
-        co_alma: Id
+        co_sub: Id
       }
     }).then((affectedRows) => {
       if (affectedRows["0"]) {
@@ -121,13 +115,13 @@ sucursals.put('/:keyId', async (req: Request, res: Response, next: NextFunction)
   }
 });
 
-sucursals.delete('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+almacens.delete('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
-    await Sucursal.destroy(
+    await Almacen.destroy(
     {
       where: {
-        co_alma: Id
+        co_sub: Id
       }
      }).then((affectedRows) => {
       if (affectedRows >= 1) {
@@ -146,7 +140,8 @@ sucursals.delete('/:keyId', async (req: Request, res: Response, next: NextFuncti
 function _clearObjectAll(_objectAll) {
   const objectAll = [];
   _objectAll.forEach((tObject) => {
-    objectAll.push(_clearObject(tObject));
+    // objectAll.push(_clearObject(tObject));
+    objectAll.push(_clearSucursalObject(tObject))
   });
  return objectAll;
 }
@@ -161,14 +156,26 @@ function _clearAlmacenAll(_objectAll) {
 
 function _clearObject(_object) {
   return {
-    co_alma: _object.co_alma.trim(),
-    name: _object.alma_des.trim()
+    co_sub: _object.co_sub.trim(), name: _object.des_sub.trim(), co_alma: _object.co_alma.trim(),
+    co_sucu: _object.co_sucu.trim(),
+    campos: { campo1: _object.campo1.trim(), campo2: _object.campo2.trim(), campo3: _object.campo3.trim(), campo4: _object.campo4.trim() }, 
+    active: { noventa: _object.noventa, nocompra: _object.nocompra, materiales: _object.materiales, produccion: _object.produccion }
   };
+}
+
+function _clearSucursalObject(_object) {
+  return {
+    co_sub: _object.co_sub.trim(), name: _object.des_sub.trim(), co_alma: _object.co_alma.trim(),
+    alma_des: _object.sucursal.alma_des.trim(), 
+    co_sucu: _object.co_sucu.trim(),
+    campos: { campo1: _object.campo1.trim(), campo2: _object.campo2.trim(), campo3: _object.campo3.trim(), campo4: _object.campo4.trim() }, 
+    active: { noventa: _object.noventa, nocompra: _object.nocompra, materiales: _object.materiales, produccion: _object.produccion }
+  }
 }
 
 function _errorObject(_err, onfunction) {
   return {
-    message: `Error On Server ${onfunction} - sucursal`,
+    message: `Error On Server ${onfunction} - almacen`,
     data: _err
   };
 }
