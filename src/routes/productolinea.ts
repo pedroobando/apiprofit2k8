@@ -1,8 +1,7 @@
 import {Router, Request, Response, NextFunction} from 'express';
-// import {lineas} from '../models/lineas';
-// import {Almacen} from '../models/Almacen';
 import {ProductoLinea} from '../models/ProductoLinea';
 import { Sucursal } from '../models/Sucursal';
+import { ProductoSubLinea } from '../models/ProductoSubLinea';
 
 export const productolineas = Router();
 const paginateSize: number = 40;
@@ -49,19 +48,20 @@ productolineas.get('/:keyId', async (req: Request, res: Response, next: NextFunc
 
     const lineas = await ProductoLinea.scope(req.query['scope']).findOne({
       where: { co_lin: Id},
-      include: [ Sucursal]
+      include: [ Sucursal ]
     }).then((theObject) => {
       if (theObject) {
         numRequest = 200;
         return {data: _clearObject(theObject)};  
       } else {
         numRequest = 404;
-        return {data: {co_lin: '0', name: ''}};
+        return {data: {co_lin: '0', name: '' }};
       }
     }).catch((err) => {
-      console.log(err);
+      // console.log(err);
       res.status(500).json(_errorObject(err, '/'));
     });
+
     res.status(numRequest).json(lineas);
   } catch (e) {
     next(e);
@@ -162,6 +162,7 @@ function _clearObject(_object) {
     name: _object.lin_des.trim(),
     co_sucu: _object.co_sucu.trim(),
     alma_des: _object.sucursal.alma_des.trim(),
+    // rows:  (typeof sublineas === "undefined") ? [] : _object.sublinea,
     campos : {
     campo1: _object.campo1.trim(),
     campo2: _object.campo2.trim(),

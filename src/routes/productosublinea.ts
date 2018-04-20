@@ -70,6 +70,43 @@ productosublinea.get('/:keyId', async (req: Request, res: Response, next: NextFu
   }
 });
 
+productosublinea.get('/porlinea/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const Id: string = req.params.keyId.trim();
+    let numRequest: number = 0;
+    if (!Id) {
+      return res.status(400).json({rows: []});
+    }
+    const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
+    
+    const limitPage: number = isNaN(req.query.limit) ? paginateSize : parseInt(req.query.limit);
+    const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
+    const offset2 = limitPage * (activePage - 1);
+
+    const sublineas = await ProductoSubLinea.scope(req.query['scope']).findAndCountAll({
+        order: [['subl_des', order]],
+        limit: limitPage,
+        offset: offset2,
+        where: { co_lin: Id },
+        include: [ProductoLinea, Sucursal]
+      }).then((objectAll) => {
+        const totalItems: number = objectAll.count;
+        const totalPage: number = Math.ceil(objectAll.count / limitPage);
+        const showItem: number = (objectAll.rows.length);
+        
+        numRequest = (totalItems >= 1 ? 200 : 404);
+        return _returnJson(_clearObjectAll(objectAll.rows),
+          _paginate(activePage, totalPage, totalItems, showItem));
+      });
+
+    res.status(numRequest).json(sublineas);
+    
+    } catch (e) {
+      res.status(500).json(_errorObject(e, '/'));
+      next(e);
+    }    
+});
+
 productosublinea.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const uuidv4 = require('uuid/v4');

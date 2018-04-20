@@ -3,7 +3,7 @@ import {
     Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, BelongsTo, DefaultScope, HasMany
   } from "sequelize-typescript";
 import { Sucursal } from "./Sucursal";
-import { ProductoSubLinea } from "./ProductoSubLinea";
+// import { ProductoSubLinea } from "./ProductoSubLinea";
   
 const _dateparse = new Date();
 const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
@@ -148,8 +148,9 @@ export class ProductoLinea extends Model<ProductoLinea> {
   // @Column
   // updatedAt: Date;
 
-  @HasMany(() => ProductoSubLinea, 'co_lin')
-  sublinea: ProductoSubLinea;
+  // @HasMany(() => ProductoSubLinea, 'co_lin')
+  // sublinea: ProductoSubLinea;
+  // Esto fue movido a ProductoSubLinea en el router, ('porlinea/:keyId')
 
   @BelongsTo(() => Sucursal, 'co_sucu')
   sucursal: Sucursal;
