@@ -102,6 +102,7 @@ sucursals.post('/', async (req: Request, res: Response, next: NextFunction) => {
 sucursals.put('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
+    req.body.alma_des = req.body.name;
     await Sucursal.update(req.body,
     {
       where: {

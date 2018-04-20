@@ -3,21 +3,9 @@ import {
   Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, HasMany, DefaultScope } from 'sequelize-typescript';
 
 import { Almacen } from './Almacen';
-// @Scopes({
-//   movies: {
-//     include: [
-//       {
-//         model: () => Movie,
-//         through: {attributes: []},
-//       },
-//     ],
-//   },
-// })
 
 const _dateparse = new Date();
-// const _rowGuidExport =  'caa3e610-10af-4798-b1b7-ab38abd8ecfc';
 const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
-
 
 @Scopes({
   almacens: {

@@ -7,31 +7,34 @@ import { Sucursal } from "./Sucursal";
 const _dateparse = new Date();
 const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
 
+@Scopes({
+    sucursals: {
+      include: [
+        {
+          model: () => Sucursal,
+          through: {attributes: []},
+        },
+      ],
+    },
+  })
+
 @DefaultScope({
-  attributes: ['co_sub', 'des_sub', 'co_alma', 'co_sucu',
-    'campo1', 'campo2', 'campo3', 'campo4',
-    'noventa', 'nocompra', 'materiales', 'produccion']
+  attributes: ['co_lin', 'lin_des', 'co_sucu',
+    'campo1', 'campo2', 'campo3', 'campo4']
 })
-@Table({tableName: 'sub_alma'})
-export class Almacen extends Model<Almacen> {
+@Table({tableName: 'lin_art'})
+export class ProductoLinea extends Model<ProductoLinea> {
 
   @PrimaryKey
   @Column({
     type: DataType.CHAR(6)
   })
-  'co_sub': string;
+  'co_lin': string;
 
   @AllowNull(false)
   @Default('')
   @Column
-  'des_sub': string;
-
-  @Default('02')
-  @AllowNull(false)
-  @Column({
-    type: DataType.CHAR(6)
-  })
-  'co_alma': number;
+  'lin_des': string;
 
   @Default('')
   @AllowNull(false)
@@ -52,6 +55,11 @@ export class Almacen extends Model<Almacen> {
   @AllowNull(false)
   @Column
   'campo4': string;
+
+  @Default('')
+  @AllowNull(true)
+  @Column
+  'dis_cen': string;  
 
   @Default('00')
   @AllowNull(false)
@@ -102,23 +110,35 @@ export class Almacen extends Model<Almacen> {
   @AllowNull(false)
   @Column
   'rowguid': string;
-  
-  @Default(false)
-  @Column
-  'noventa': boolean;
 
-  @Default(false)
-  @Column
-  'nocompra': boolean;
-
-  @Default(false)
-  @Column
-  'materiales': boolean;
-    
-  @Default(false)
-  @Column
-  'produccion': boolean;
+  @AllowNull(false)
+  @Default('')
+  @Column({
+      type: DataType.CHAR(15)
+  })
+  'co_imun': string;  
+ 
+  @AllowNull(false)
+  @Default('')
+  @Column({
+      type: DataType.CHAR(6)
+  })
+  'co_reten': string;  
+ 
+  @AllowNull(false)
+  @Default(0)
+  @Column({
+      type: DataType.FLOAT
+  })
+  'comi_lin': number; 
   
+  @AllowNull(false)
+  @Default(0)
+  @Column({
+      type: DataType.FLOAT
+  })
+  'comi_lin2': number; 
+
   // @CreatedAt
   // @Column
   // createdAt: Date;
@@ -127,11 +147,10 @@ export class Almacen extends Model<Almacen> {
   // @Column
   // updatedAt: Date;
 
-  @BelongsTo(() => Sucursal, 'co_alma')
+  @BelongsTo(() => Sucursal, 'co_sucu')
   sucursal: Sucursal;
 
-  static scope(name: string = 'defaultScope'): typeof Almacen {
+  static scope(name: string = 'defaultScope'): typeof ProductoLinea {
     return super.scope.call(this, name);
   }
 }
-
