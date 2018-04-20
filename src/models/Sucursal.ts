@@ -52,7 +52,7 @@ export class Sucursal extends Model<Sucursal> {
   @Column
   'num_fac_fin': number;
 
-  @Default("")
+  @Default('')
   @AllowNull(false)
   @Column
   'campo1': string;
