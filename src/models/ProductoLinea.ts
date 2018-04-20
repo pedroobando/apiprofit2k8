@@ -1,22 +1,23 @@
 import {
     Model, Table, BelongsToMany, Scopes, CreatedAt, UpdatedAt,
-    Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, BelongsTo, DefaultScope
+    Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, BelongsTo, DefaultScope, HasMany
   } from "sequelize-typescript";
 import { Sucursal } from "./Sucursal";
+import { ProductoSubLinea } from "./ProductoSubLinea";
   
 const _dateparse = new Date();
 const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
 
-@Scopes({
-    sucursals: {
-      include: [
-        {
-          model: () => Sucursal,
-          through: {attributes: []},
-        },
-      ],
-    },
-  })
+// @Scopes({
+//     sucursals: {
+//       include: [
+//         {
+//           model: () => Sucursal,
+//           through: {attributes: []},
+//         },
+//       ],
+//     },
+//   })
 
 @DefaultScope({
   attributes: ['co_lin', 'lin_des', 'co_sucu',
@@ -35,6 +36,13 @@ export class ProductoLinea extends Model<ProductoLinea> {
   @Default('')
   @Column
   'lin_des': string;
+
+  @Default('02')
+  @AllowNull(false)
+  @Column({
+    type: DataType.CHAR(6)
+  })
+  'co_sucu': string;
 
   @Default('')
   @AllowNull(false)
@@ -98,13 +106,6 @@ export class ProductoLinea extends Model<ProductoLinea> {
   @Column
   'trasnfe': string;
 
-  @Default('02')
-  @AllowNull(false)
-  @Column({
-    type: DataType.CHAR(6)
-  })
-  'co_sucu': string;
-
   @IsUUID(4)
   @Default(_rowGuidExport)
   @AllowNull(false)
@@ -146,6 +147,9 @@ export class ProductoLinea extends Model<ProductoLinea> {
   // @UpdatedAt
   // @Column
   // updatedAt: Date;
+
+  @HasMany(() => ProductoSubLinea, 'co_lin')
+  sublinea: ProductoSubLinea;
 
   @BelongsTo(() => Sucursal, 'co_sucu')
   sucursal: Sucursal;

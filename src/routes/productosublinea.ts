@@ -1,13 +1,14 @@
 import {Router, Request, Response, NextFunction} from 'express';
-// import {lineas} from '../models/lineas';
+// import {sublineas} from '../models/sublineas';
 // import {Almacen} from '../models/Almacen';
-import {ProductoLinea} from '../models/ProductoLinea';
+import {ProductoSubLinea} from '../models/ProductoSubLinea';
+import { ProductoLinea } from '../models/ProductoLinea';
 import { Sucursal } from '../models/Sucursal';
 
-export const productolineas = Router();
+export const productosublinea = Router();
 const paginateSize: number = 40;
 
-productolineas.get('/', async (req: Request, res: Response, next: NextFunction) => {
+productosublinea.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
     const filtername: string = !req.query.filtername ? '' : req.query.filtername.toUpperCase();
@@ -16,12 +17,12 @@ productolineas.get('/', async (req: Request, res: Response, next: NextFunction) 
     const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
     const offset2 = limitPage * (activePage - 1);
 
-    const lineas = await ProductoLinea.scope(req.query['scope']).findAndCountAll({
-        order: [['lin_des', order]],
+    const sublineas = await ProductoSubLinea.scope(req.query['scope']).findAndCountAll({
+        order: [['subl_des', order]],
         limit: limitPage,
         offset: offset2,
-        where: { lin_des: {$like: `%${filtername}%`}},
-        include: [Sucursal]
+        where: { subl_des: {$like: `%${filtername}%`}},
+        include: [ProductoLinea, Sucursal]
       }).then((objectAll) => {
         const totalItems: number = objectAll.count;
         const totalPage: number = Math.ceil(objectAll.count / limitPage);
@@ -30,7 +31,7 @@ productolineas.get('/', async (req: Request, res: Response, next: NextFunction) 
           _paginate(activePage, totalPage, totalItems, showItem));
       });
 
-    res.status(200).json(lineas);
+    res.status(200).json(sublineas);
     
   } catch (e) {
     console.log(e);
@@ -39,7 +40,7 @@ productolineas.get('/', async (req: Request, res: Response, next: NextFunction) 
   }
 });
 
-productolineas.get('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+productosublinea.get('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
     let numRequest: number = 0;
@@ -47,33 +48,35 @@ productolineas.get('/:keyId', async (req: Request, res: Response, next: NextFunc
       return res.status(400).json(_clearObject({id: 0, name: '', active: false}));
     }
 
-    const lineas = await ProductoLinea.scope(req.query['scope']).findOne({
-      where: { co_lin: Id},
-      include: [ Sucursal]
+    const sublineas = await ProductoSubLinea.scope(req.query['scope']).findOne({
+      where: { co_subl: Id},
+      include: [ProductoLinea, Sucursal]
     }).then((theObject) => {
       if (theObject) {
         numRequest = 200;
         return {data: _clearObject(theObject)};  
       } else {
         numRequest = 404;
-        return {data: {co_lin: '0', name: ''}};
+        return {data: {co_subl: '0', name: ''}};
       }
     }).catch((err) => {
-      console.log(err);
+      // console.log(err);
       res.status(500).json(_errorObject(err, '/'));
     });
-    res.status(numRequest).json(lineas);
+    // console.log(sublineas);
+    res.status(numRequest).json(sublineas);
   } catch (e) {
     next(e);
   }
 });
 
-productolineas.post('/', async (req: Request, res: Response, next: NextFunction) => {
+productosublinea.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const uuidv4 = require('uuid/v4');
-    await ProductoLinea.create({
-      co_lin: req.body.keyId,
-      lin_des: req.body.name,
+    await ProductoSubLinea.create({
+      co_subl: req.body.keyId,
+      subl_des: req.body.name,
+      co_lin: req.body.co_lin,
       co_sucu:  req.body.co_sucu,
       campo1: req.body.campo1,
       campo2: req.body.campo2,
@@ -83,7 +86,6 @@ productolineas.post('/', async (req: Request, res: Response, next: NextFunction)
     }).then((theObject) => {
       res.sendStatus(201);
     }).catch((err) => {
-      // console.log(err);
       res.status(500).json(_errorObject(err, '/'));
     });    
   } catch (e) {
@@ -91,18 +93,18 @@ productolineas.post('/', async (req: Request, res: Response, next: NextFunction)
   }
 });
 
-productolineas.put('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+productosublinea.put('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
     // Verificacion de la propiedad name, para su respectivo guardado
     // en la base de datos
     if (typeof req.body.name !== "undefined") {
-      req.body.lin_des = req.body.name;  
+      req.body.subl_des = req.body.name;  
     }
-    await ProductoLinea.update(req.body,
+    await ProductoSubLinea.update(req.body,
     {
       where: {
-        co_lin: Id
+        co_subl: Id
       }
     }).then((affectedRows) => {
       if (affectedRows["0"]) {
@@ -118,13 +120,13 @@ productolineas.put('/:keyId', async (req: Request, res: Response, next: NextFunc
   }
 });
 
-productolineas.delete('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+productosublinea.delete('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
-    await ProductoLinea.destroy(
+    await ProductoSubLinea.destroy(
     {
       where: {
-        co_lin: Id
+        co_subl: Id
       }
      }).then((affectedRows) => {
       if (affectedRows >= 1) {
@@ -151,15 +153,17 @@ function _clearObjectAll(_objectAll) {
 // function _clearAlmacenAll(_objectAll) {
 //   const objectAll = [];
 //   _objectAll.forEach((tObject) => {
-//     objectAll.push({ co_lin: tObject.co_lin.trim(), lin_des: tObject.lin_des.trim() });
+//     objectAll.push({ co_subl: tObject.co_subl.trim(), subl_des: tObject.subl_des.trim() });
 //   });
 //  return objectAll;
 // }
 
 function _clearObject(_object) {
   return {
+    co_subl: _object.co_subl.trim(),
+    name: _object.subl_des.trim(),
     co_lin: _object.co_lin.trim(),
-    name: _object.lin_des.trim(),
+    des_lin: _object.linea.lin_des.trim(),
     co_sucu: _object.co_sucu.trim(),
     alma_des: _object.sucursal.alma_des.trim(),
     campos : {
@@ -173,7 +177,7 @@ function _clearObject(_object) {
 
 function _errorObject(_err, onfunction) {
   return {
-    message: `Error On Server ${onfunction} - lineas`,
+    message: `Error On Server ${onfunction} - sublineas`,
     data: _err
   };
 }

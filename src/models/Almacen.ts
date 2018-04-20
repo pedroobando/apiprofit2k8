@@ -33,6 +33,13 @@ export class Almacen extends Model<Almacen> {
   })
   'co_alma': number;
 
+  @Default('02')
+  @AllowNull(false)
+  @Column({
+    type: DataType.CHAR(6)
+  })
+  'co_sucu': string;
+  
   @Default('')
   @AllowNull(false)
   @Column
@@ -89,13 +96,6 @@ export class Almacen extends Model<Almacen> {
   @AllowNull(false)
   @Column
   'trasnfe': string;
-
-  @Default('02')
-  @AllowNull(false)
-  @Column({
-    type: DataType.CHAR(6)
-  })
-  'co_sucu': string;
 
   @IsUUID(4)
   @Default(_rowGuidExport)

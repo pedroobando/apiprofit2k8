@@ -8,20 +8,20 @@ import { ProductoLinea } from "./ProductoLinea";
 const _dateparse = new Date();
 const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
 
-@Scopes({
-    parientes: {
-      include: [
-        // {
-        //   model: () => Sucursal,
-        //   through: {attributes: []},
-        // },
-        {
-          model: () => ProductoLinea,
-          through: {attributes: []}
-        }
-      ],
-    },
-  })
+// @Scopes({
+//     parientes: {
+//       include: [
+//         {
+//           model: () => Sucursal,
+//           through: {attributes: []},
+//         },
+//         {
+//           model: () => ProductoLinea,
+//           through: {attributes: []}
+//         }
+//       ],
+//     },
+//   })
 
 @DefaultScope({
   attributes: ['co_subl', 'subl_des', 'co_lin', 'co_sucu',
@@ -144,9 +144,8 @@ export class ProductoSubLinea extends Model<ProductoSubLinea> {
   })
   'movil': string;
 
-
-  // @BelongsTo(() => Sucursal, 'co_alma')
-  // sucursal: Sucursal;
+  @BelongsTo(() => Sucursal, 'co_sucu')
+  sucursal: Sucursal;
 
   @BelongsTo(() => ProductoLinea, 'co_lin')
   linea: ProductoLinea;

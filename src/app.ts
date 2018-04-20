@@ -7,6 +7,7 @@ import {inicial} from './routes/database';
 import {almacens} from './routes/almacen';
 import {sucursals} from './routes/sucursal';
 import {productolineas} from './routes/productolinea';
+import {productosublinea} from './routes/productosublinea';
 import { Response, Request, NextFunction, ErrorRequestHandler } from "express";
 
 export const app = express();
@@ -33,6 +34,7 @@ app.use('/actors', actors);
 app.use('/almacenes', almacens);
 app.use('/sucursales', sucursals);
 app.use('/lineas', productolineas);
+app.use('/sublineas', productosublinea);
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response) {

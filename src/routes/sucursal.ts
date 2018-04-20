@@ -102,7 +102,11 @@ sucursals.post('/', async (req: Request, res: Response, next: NextFunction) => {
 sucursals.put('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
-    req.body.alma_des = req.body.name;
+    // Verificacion de la propiedad name, para su respectivo guardado
+    // en la base de datos
+    if (typeof req.body.name !== "undefined") {
+      req.body.alma_des = req.body.name;  
+    }
     await Sucursal.update(req.body,
     {
       where: {
@@ -163,7 +167,8 @@ function _clearAlmacenAll(_objectAll) {
 function _clearObject(_object) {
   return {
     co_alma: _object.co_alma.trim(),
-    name: _object.alma_des.trim()
+    name: _object.alma_des.trim(),
+    co_sucu: _object.co_sucu.trim()
   };
 }
 

@@ -36,6 +36,11 @@ export class Sucursal extends Model<Sucursal> {
   @Column
   'alma_des': string;
 
+  @Default('02')
+  @AllowNull(false)
+  @Column
+  'co_sucu': string;
+
   // @Unique
   @Default(0)
   @AllowNull(false)
@@ -108,11 +113,6 @@ export class Sucursal extends Model<Sucursal> {
   @AllowNull(false)
   @Column
   'trasnfe': string;
-
-  @Default('02')
-  @AllowNull(false)
-  @Column
-  'co_sucu': string;
 
   @IsUUID(4)
   @AllowNull(false)

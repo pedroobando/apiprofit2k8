@@ -97,8 +97,11 @@ almacens.post('/', async (req: Request, res: Response, next: NextFunction) => {
 almacens.put('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
-    // des_sub: req.body.name,
-    req.body.des_sub = req.body.name;
+    // Verificacion de la propiedad name, para su respectivo guardado
+    // en la base de datos
+    if (typeof req.body.name !== "undefined") {
+      req.body.des_sub = req.body.name;  
+    }
     await Almacen.update(req.body,
     {
       where: {
