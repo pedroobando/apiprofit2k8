@@ -53,7 +53,7 @@ sucursals.get('/', async (req: Request, res: Response, next: NextFunction) => {
 sucursals.get('/help', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const retvalor = {
-      keyId: '001', name: 'nombre', co_sucu: '002', nro_fact: '2', rowguid: 'uuidv4()'
+      keyId: '001', name: 'nombre', co_sucu: '002', nro_fact: '782'
     };
     const sucursales = _returnJson(retvalor,
       _paginate(1, 1, 1, 1));

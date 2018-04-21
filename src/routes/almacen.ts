@@ -37,17 +37,50 @@ almacens.get('/', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+almacens.get('/porsucursal/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const Id: string = req.params.keyId.trim();
+    const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
+    // const filtername: string = !req.query.filtername ? '' : req.query.filtername.toUpperCase();
+    
+    const limitPage: number = isNaN(req.query.limit) ? paginateSize : parseInt(req.query.limit);
+    const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
+    const offset2 = limitPage * (activePage - 1);
+
+    const almacenes = await Almacen.scope(req.query['scope']).findAndCountAll({
+        order: [['des_sub', order]],
+        limit: limitPage,
+        offset: offset2,
+        where: { co_alma: Id},
+        include: [Sucursal]
+      }).then((objectAll) => {
+        const totalItems: number = objectAll.count;
+        const totalPage: number = Math.ceil(objectAll.count / limitPage);
+        const showItem: number = (objectAll.rows.length);
+        return _returnJson(_clearObjectAll(objectAll.rows),
+          _paginate(activePage, totalPage, totalItems, showItem));
+      });
+
+    res.status(200).json(almacenes);
+    
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(_errorObject(e, '/'));
+    next(e);
+  }
+});
+
 almacens.get('/help', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const retvalor = {
       keyId: '001', name: 'nombre', co_sucu: '01', co_alma: '02', co_lin: '032', co_subl: '021',
       campo1: 'string largo', campo2: 'string largo', campo3: 'string largo', campo4: 'string largo',
-      uni_venta: 'und', stock_act: '3212.21', rowguid: 'uuidv4()'
+      uni_venta: 'und', stock_act: '3212.21'
     };
 
-    const almacenes = _returnJson(retvalor,
+    const ayudas = _returnJson(retvalor,
       _paginate(1, 1, 1, 1));
-    res.status(200).json(almacenes);
+    res.status(200).json(ayudas);
     
   } catch (e) {
     console.log(e);
@@ -195,7 +228,7 @@ function _clearSucursalObject(_object) {
     co_sucu: _object.co_sucu.trim(),
     campos: { campo1: _object.campo1.trim(), campo2: _object.campo2.trim(), campo3: _object.campo3.trim(), campo4: _object.campo4.trim() }, 
     active: { noventa: _object.noventa, nocompra: _object.nocompra, materiales: _object.materiales, produccion: _object.produccion }
-  }
+  };
 }
 
 function _errorObject(_err, onfunction) {

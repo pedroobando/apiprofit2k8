@@ -40,35 +40,25 @@ productosublinea.get('/', async (req: Request, res: Response, next: NextFunction
   }
 });
 
-productosublinea.get('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+productosublinea.get('/help', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const Id: string = req.params.keyId.trim();
-    let numRequest: number = 0;
-    if (!Id) {
-      return res.status(400).json(_clearObject({id: 0, name: '', active: false}));
-    }
+    const retvalor = {
+      keyId: '001', name: 'nombre', co_lin: '001' , co_sucu:  '002',
+      campo1: 'STRING LARGO (80)', campo2: 'STRING LARGO (80)', campo3: 'STRING LARGO (80)', campo4: 'STRING LARGO (80)'
+    };
 
-    const sublineas = await ProductoSubLinea.scope(req.query['scope']).findOne({
-      where: { co_subl: Id},
-      include: [ProductoLinea, Sucursal]
-    }).then((theObject) => {
-      if (theObject) {
-        numRequest = 200;
-        return {data: _clearObject(theObject)};  
-      } else {
-        numRequest = 404;
-        return {data: {co_subl: '0', name: ''}};
-      }
-    }).catch((err) => {
-      // console.log(err);
-      res.status(500).json(_errorObject(err, '/'));
-    });
-    // console.log(sublineas);
-    res.status(numRequest).json(sublineas);
+    const ayudas = _returnJson(retvalor,
+      _paginate(1, 1, 1, 1));
+    res.status(200).json(ayudas);
+    
   } catch (e) {
+    console.log(e);
+    res.status(500).json(_errorObject(e, '/'));
     next(e);
   }
 });
+
+
 
 productosublinea.get('/porlinea/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -105,6 +95,38 @@ productosublinea.get('/porlinea/:keyId', async (req: Request, res: Response, nex
       res.status(500).json(_errorObject(e, '/'));
       next(e);
     }    
+});
+
+
+productosublinea.get('/:keyIdLinea/:keyIdSublinea', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const IdLinea: string = req.params.keyIdLinea.trim();
+    const IdSubLinea: string = req.params.keyIdSublinea.trim();
+    let numRequest: number = 0;
+    if (!IdLinea || !IdSubLinea) {
+      return res.status(400).json(_clearObject({id: 0, name: '', active: false}));
+    }
+
+    const sublineas = await ProductoSubLinea.scope(req.query['scope']).findOne({
+      where: { co_subl: IdSubLinea, co_lin: IdLinea},
+      include: [ProductoLinea, Sucursal]
+    }).then((theObject) => {
+      if (theObject) {
+        numRequest = 200;
+        return {data: _clearObject(theObject)};  
+      } else {
+        numRequest = 404;
+        return {data: {co_subl: '0', name: ''}};
+      }
+    }).catch((err) => {
+      // console.log(err);
+      res.status(500).json(_errorObject(err, '/'));
+    });
+    // console.log(sublineas);
+    res.status(numRequest).json(sublineas);
+  } catch (e) {
+    next(e);
+  }
 });
 
 productosublinea.post('/', async (req: Request, res: Response, next: NextFunction) => {

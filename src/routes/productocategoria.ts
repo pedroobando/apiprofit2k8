@@ -42,6 +42,24 @@ productocategoria.get('/', async (req: Request, res: Response, next: NextFunctio
   }
 });
 
+productocategoria.get('/help', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const retvalor = {
+      keyId: '001', name: 'nombre', co_sucu:  '002',
+      campo1: 'STRING LARGO (80)', campo2: 'STRING LARGO (80)', campo3: 'STRING LARGO (80)', campo4: 'STRING LARGO (80)'
+    };
+
+    const ayudas = _returnJson(retvalor,
+      _paginate(1, 1, 1, 1));
+    res.status(200).json(ayudas);
+    
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(_errorObject(e, '/'));
+    next(e);
+  }
+});
+
 productocategoria.get('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();

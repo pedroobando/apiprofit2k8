@@ -17,7 +17,7 @@ productos.get('/', async (req: Request, res: Response, next: NextFunction) => {
     const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
     const offset2 = limitPage * (activePage - 1);
 
-    const lineas = await Producto.scope(req.query['scope']).findAndCountAll({
+    const losProductos = await Producto.scope(req.query['scope']).findAndCountAll({
         order: [['art_des', order]],
         limit: limitPage,
         offset: offset2,
@@ -32,10 +32,112 @@ productos.get('/', async (req: Request, res: Response, next: NextFunction) => {
           _paginate(activePage, totalPage, totalItems, showItem));
       });
 
-    res.status(200).json(lineas);
+    res.status(200).json(losProductos);
     
   } catch (e) {
     // console.log(e);
+    res.status(500).json(_errorObject(e, '/'));
+    next(e);
+  }
+});
+
+productos.get('/porlinea/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const Id: string = req.params.keyId.trim();
+    const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
+    const filtername: string = !req.query.filtername ? '' : req.query.filtername.toUpperCase();
+    
+    const limitPage: number = isNaN(req.query.limit) ? paginateSize : parseInt(req.query.limit);
+    const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
+    const offset2 = limitPage * (activePage - 1);
+
+    const losProductos = await Producto.scope(req.query['scope']).findAndCountAll({
+        order: [['art_des', order]],
+        limit: limitPage,
+        offset: offset2,
+        where: {art_des: {$like: `%${filtername}%`}, co_lin: Id},
+        include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+      }).then((objectAll) => {
+        const totalItems: number = objectAll.count;
+        const totalPage: number = Math.ceil(objectAll.count / limitPage);
+        const showItem: number = (objectAll.rows.length);
+        // console.log(objectAll);
+        return _returnJson(_clearObjectAll(objectAll.rows),
+          _paginate(activePage, totalPage, totalItems, showItem));
+      });
+
+    res.status(200).json(losProductos);
+    
+  } catch (e) {
+    // console.log(e);
+    res.status(500).json(_errorObject(e, '/'));
+    next(e);
+  }
+});
+
+productos.get('/porlinea/:keyId/porsublinea/:keyIdSublinea', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const IdLinea: string = req.params.keyId.trim();
+    const IdSubLinea: string = req.params.keyIdSublinea.trim();
+    const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
+    const filtername: string = !req.query.filtername ? '' : req.query.filtername.toUpperCase();
+    
+    const limitPage: number = isNaN(req.query.limit) ? paginateSize : parseInt(req.query.limit);
+    const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
+    const offset2 = limitPage * (activePage - 1);
+
+    const losProductos = await Producto.scope(req.query['scope']).findAndCountAll({
+        order: [['art_des', order]],
+        limit: limitPage,
+        offset: offset2,
+        where: {art_des: {$like: `%${filtername}%`}, co_lin: IdLinea, co_subl: IdSubLinea },
+        include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+      }).then((objectAll) => {
+        const totalItems: number = objectAll.count;
+        const totalPage: number = Math.ceil(objectAll.count / limitPage);
+        const showItem: number = (objectAll.rows.length);
+        // console.log(objectAll);
+        return _returnJson(_clearObjectAll(objectAll.rows),
+          _paginate(activePage, totalPage, totalItems, showItem));
+      });
+
+    res.status(200).json(losProductos);
+    
+  } catch (e) {
+    res.status(500).json(_errorObject(e, '/'));
+    next(e);
+  }
+});
+
+productos.get('/porproveedor/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const IdProveedor: string = req.params.keyId.trim();
+    // const IdSubLinea: string = req.params.keyIdSublinea.trim();
+    const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
+    const filtername: string = !req.query.filtername ? '' : req.query.filtername.toUpperCase();
+    
+    const limitPage: number = isNaN(req.query.limit) ? paginateSize : parseInt(req.query.limit);
+    const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
+    const offset2 = limitPage * (activePage - 1);
+
+    const losProductos = await Producto.scope(req.query['scope']).findAndCountAll({
+        order: [['art_des', order]],
+        limit: limitPage,
+        offset: offset2,
+        where: {art_des: {$like: `%${filtername}%`}, co_prov: IdProveedor },
+        include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+      }).then((objectAll) => {
+        const totalItems: number = objectAll.count;
+        const totalPage: number = Math.ceil(objectAll.count / limitPage);
+        const showItem: number = (objectAll.rows.length);
+        // console.log(objectAll);
+        return _returnJson(_clearObjectAll(objectAll.rows),
+          _paginate(activePage, totalPage, totalItems, showItem));
+      });
+
+    res.status(200).json(losProductos);
+    
+  } catch (e) {
     res.status(500).json(_errorObject(e, '/'));
     next(e);
   }
@@ -48,7 +150,7 @@ productos.get('/help', async (req: Request, res: Response, next: NextFunction) =
       co_prov: '0032342897', uni_venta: 'UND', uni_compra: 'UND', stock_act: '32.2', co_color: 'N',
       fecha_reg: '2001/01/01', item: '001', ubicacion: 'BARCELONA', procedenci: 'PORTUGAL', campo1: 'STRING LARGO (80)',
       campo2: 'STRING LARGO (80)', campo3: 'STRING LARGO (80)', campo4: 'STRING LARGO (80)', campo5: 'STRING LARGO (80)',
-      campo6: 'STRING LARGO (80)', campo7: 'STRING LARGO (80)', campo8: 'STRING LARGO (80)', rowguid: 'uuidv4()'
+      campo6: 'STRING LARGO (80)', campo7: 'STRING LARGO (80)', campo8: 'STRING LARGO (80)'
     };
 
     const ayudas = _returnJson(retvalor,
