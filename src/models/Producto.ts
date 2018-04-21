@@ -7,8 +7,6 @@ import { ProductoLinea } from "./ProductoLinea";
 import { ProductoSubLinea } from "./ProductoSubLinea";
 import { ProductoCategoria } from "./ProductoCategoria";
 
-
-
 const _dateparse = new Date();
 const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
 
