@@ -1,14 +1,15 @@
 import {Router, Request, Response, NextFunction} from 'express';
-// import {sublineas} from '../models/sublineas';
+// import {categorias} from '../models/categorias';
 // import {Almacen} from '../models/Almacen';
-import {ProductoSubLinea} from '../models/ProductoSubLinea';
-import { ProductoLinea } from '../models/ProductoLinea';
-import { Sucursal } from '../models/Sucursal';
 
-export const productosublinea = Router();
+// import { ProductoLinea } from '../models/ProductoLinea';
+import { Sucursal } from '../models/Sucursal';
+import { ProductoCategoria } from '../models/ProductoCategoria';
+
+export const productocategoria = Router();
 const paginateSize: number = 40;
 
-productosublinea.get('/', async (req: Request, res: Response, next: NextFunction) => {
+productocategoria.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
     const filtername: string = !req.query.filtername ? '' : req.query.filtername.toUpperCase();
@@ -17,12 +18,12 @@ productosublinea.get('/', async (req: Request, res: Response, next: NextFunction
     const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
     const offset2 = limitPage * (activePage - 1);
 
-    const sublineas = await ProductoSubLinea.scope(req.query['scope']).findAndCountAll({
-        order: [['subl_des', order]],
+    const categorias = await ProductoCategoria.scope(req.query['scope']).findAndCountAll({
+        order: [['cat_des', order]],
         limit: limitPage,
         offset: offset2,
-        where: { subl_des: {$like: `%${filtername}%`}},
-        include: [ProductoLinea, Sucursal]
+        where: { cat_des: {$like: `%${filtername}%`}},
+        include: [Sucursal]
       }).then((objectAll) => {
         const totalItems: number = objectAll.count;
         const totalPage: number = Math.ceil(objectAll.count / limitPage);
@@ -30,8 +31,9 @@ productosublinea.get('/', async (req: Request, res: Response, next: NextFunction
         return _returnJson(_clearObjectAll(objectAll.rows),
           _paginate(activePage, totalPage, totalItems, showItem));
       });
+    console.log(categorias);
 
-    res.status(200).json(sublineas);
+    res.status(200).json(categorias);
     
   } catch (e) {
     console.log(e);
@@ -40,7 +42,7 @@ productosublinea.get('/', async (req: Request, res: Response, next: NextFunction
   }
 });
 
-productosublinea.get('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+productocategoria.get('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
     let numRequest: number = 0;
@@ -48,9 +50,9 @@ productosublinea.get('/:keyId', async (req: Request, res: Response, next: NextFu
       return res.status(400).json(_clearObject({id: 0, name: '', active: false}));
     }
 
-    const sublineas = await ProductoSubLinea.scope(req.query['scope']).findOne({
-      where: { co_subl: Id},
-      include: [ProductoLinea, Sucursal]
+    const categorias = await ProductoCategoria.scope(req.query['scope']).findOne({
+      where: { co_cat: Id},
+      include: [Sucursal]
     }).then((theObject) => {
       if (theObject) {
         numRequest = 200;
@@ -63,57 +65,57 @@ productosublinea.get('/:keyId', async (req: Request, res: Response, next: NextFu
       // console.log(err);
       res.status(500).json(_errorObject(err, '/'));
     });
-    // console.log(sublineas);
-    res.status(numRequest).json(sublineas);
+    // console.log(categorias);
+    res.status(numRequest).json(categorias);
   } catch (e) {
     next(e);
   }
 });
 
-productosublinea.get('/porlinea/:keyId', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const Id: string = req.params.keyId.trim();
-    let numRequest: number = 0;
-    if (!Id) {
-      return res.status(400).json({rows: []});
-    }
-    const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
+// productocategoria.get('/porlinea/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     const Id: string = req.params.keyId.trim();
+//     let numRequest: number = 0;
+//     if (!Id) {
+//       return res.status(400).json({rows: []});
+//     }
+//     const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
     
-    const limitPage: number = isNaN(req.query.limit) ? paginateSize : parseInt(req.query.limit);
-    const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
-    const offset2 = limitPage * (activePage - 1);
+//     const limitPage: number = isNaN(req.query.limit) ? paginateSize : parseInt(req.query.limit);
+//     const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
+//     const offset2 = limitPage * (activePage - 1);
 
-    const sublineas = await ProductoSubLinea.scope(req.query['scope']).findAndCountAll({
-        order: [['subl_des', order]],
-        limit: limitPage,
-        offset: offset2,
-        where: { co_lin: Id },
-        include: [ProductoLinea, Sucursal]
-      }).then((objectAll) => {
-        const totalItems: number = objectAll.count;
-        const totalPage: number = Math.ceil(objectAll.count / limitPage);
-        const showItem: number = (objectAll.rows.length);
+//     const categorias = await productocategoria.scope(req.query['scope']).findAndCountAll({
+//         order: [['subl_des', order]],
+//         limit: limitPage,
+//         offset: offset2,
+//         where: { co_lin: Id },
+//         include: [ProductoLinea, Sucursal]
+//       }).then((objectAll) => {
+//         const totalItems: number = objectAll.count;
+//         const totalPage: number = Math.ceil(objectAll.count / limitPage);
+//         const showItem: number = (objectAll.rows.length);
         
-        numRequest = (totalItems >= 1 ? 200 : 404);
-        return _returnJson(_clearObjectAll(objectAll.rows),
-          _paginate(activePage, totalPage, totalItems, showItem));
-      });
+//         numRequest = (totalItems >= 1 ? 200 : 404);
+//         return _returnJson(_clearObjectAll(objectAll.rows),
+//           _paginate(activePage, totalPage, totalItems, showItem));
+//       });
 
-    res.status(numRequest).json(sublineas);
+//     res.status(numRequest).json(categorias);
     
-    } catch (e) {
-      res.status(500).json(_errorObject(e, '/'));
-      next(e);
-    }    
-});
+//     } catch (e) {
+//       res.status(500).json(_errorObject(e, '/'));
+//       next(e);
+//     }    
+// });
 
-productosublinea.post('/', async (req: Request, res: Response, next: NextFunction) => {
+productocategoria.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const uuidv4 = require('uuid/v4');
-    await ProductoSubLinea.create({
-      co_subl: req.body.keyId,
-      subl_des: req.body.name,
-      co_lin: req.body.co_lin,
+    await ProductoCategoria.create({
+      co_cat: req.body.keyId,
+      cat_des: req.body.name,
+      // co_lin: req.body.co_lin,
       co_sucu:  req.body.co_sucu,
       campo1: req.body.campo1,
       campo2: req.body.campo2,
@@ -130,15 +132,15 @@ productosublinea.post('/', async (req: Request, res: Response, next: NextFunctio
   }
 });
 
-productosublinea.put('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+productocategoria.put('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
     // Verificacion de la propiedad name, para su respectivo guardado
     // en la base de datos
     if (typeof req.body.name !== "undefined") {
-      req.body.subl_des = req.body.name;  
+      req.body.cat_des = req.body.name;  
     }
-    await ProductoSubLinea.update(req.body,
+    await ProductoCategoria.update(req.body,
     {
       where: {
         co_subl: Id
@@ -157,13 +159,13 @@ productosublinea.put('/:keyId', async (req: Request, res: Response, next: NextFu
   }
 });
 
-productosublinea.delete('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+productocategoria.delete('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
-    await ProductoSubLinea.destroy(
+    await ProductoCategoria.destroy(
     {
       where: {
-        co_subl: Id
+        co_cat: Id
       }
      }).then((affectedRows) => {
       if (affectedRows >= 1) {
@@ -197,10 +199,10 @@ function _clearObjectAll(_objectAll) {
 
 function _clearObject(_object) {
   return {
-    co_subl: _object.co_subl.trim(),
-    name: _object.subl_des.trim(),
-    co_lin: _object.co_lin.trim(),
-    des_lin: _object.linea.lin_des.trim(),
+    co_cat: _object.co_cat.trim(),
+    name: _object.cat_des.trim(),
+    // co_lin: _object.co_lin.trim(),
+    // des_lin: _object.linea.lin_des.trim(),
     co_sucu: _object.co_sucu.trim(),
     alma_des: _object.sucursal.alma_des.trim(),
     campos : {
@@ -214,7 +216,7 @@ function _clearObject(_object) {
 
 function _errorObject(_err, onfunction) {
   return {
-    message: `Error On Server ${onfunction} - sublinea`,
+    message: `Error On Server ${onfunction} - categoria`,
     data: _err
   };
 }

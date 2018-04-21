@@ -5,29 +5,18 @@ import {
 import { Sucursal } from "./Sucursal";
 import { ProductoLinea } from "./ProductoLinea";
 import { ProductoSubLinea } from "./ProductoSubLinea";
+import { ProductoCategoria } from "./ProductoCategoria";
+
 
 
 const _dateparse = new Date();
 const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
 
-// @Scopes({
-//     parientes: {
-//       include: [
-//         {
-//           model: () => Sucursal,
-//           through: {attributes: []},
-//         },
-//         {
-//           model: () => ProductoLinea,
-//           through: {attributes: []}
-//         }
-//       ],
-//     },
-//   })
-
 @DefaultScope({
-  attributes: ['co_art', 'art_des', 'co_lin', 'co_sucu', 'co_cat', 'co_subl', 'uni_venta', 'stock_act', 
-  'campo1', 'campo2', 'campo3', 'campo4' ]
+  attributes: ['co_art', 'art_des', 'co_lin', 'co_cat', 'co_sucu', 'co_subl', 'co_prov',
+  'uni_compra', 'uni_venta', 'stock_act', 'co_color', 'fecha_reg', 'item', 'ubicacion', 'procedenci',
+  'campo1', 'campo2', 'campo3', 'campo4', 'campo5', 'campo6', 'campo7', 'campo8',
+  'rowguid' ]
 })
 @Table({tableName: 'art'})
 export class Producto extends Model<Producto> {
@@ -92,8 +81,6 @@ export class Producto extends Model<Producto> {
   })
   'uni_compra': string;
 
-
-
   @Default('N')
   @AllowNull(false)
   @Column
@@ -112,13 +99,83 @@ export class Producto extends Model<Producto> {
   @Column
   'rowguid': string;
 
+  @Default(_dateparse)
+  @AllowNull(false)
+  @Column
+  'fecha_reg': Date;
+
+  @Default('000')
+  @AllowNull(false)
+  @Column({
+    type: DataType.CHAR(10)
+  })
+  'item': string;
+
+  @Default('')
+  @AllowNull(false)
+  @Column({
+    type: DataType.CHAR(60)
+  })
+  'ubicacion': string;
+
+  @Default('')
+  @AllowNull(false)
+  @Column({
+    type: DataType.CHAR(10)
+  })
+  'procedenci': string;
+
+  @Default('')
+  @AllowNull(false)
+  @Column
+  'campo1': string;
+
+  @Default('')
+  @AllowNull(false)
+  @Column
+  'campo2': string;
+
+  @Default('')
+  @AllowNull(false)
+  @Column
+  'campo3': string;
+
+  @Default('')
+  @AllowNull(false)
+  @Column
+  'campo4': string;
+
+  @Default('')
+  @AllowNull(false)
+  @Column
+  'campo5': string;
+
+  @Default('')
+  @AllowNull(false)
+  @Column
+  'campo6': string;
+
+  @Default('')
+  @AllowNull(false)
+  @Column
+  'campo7': string;
+
+  @Default('')
+  @AllowNull(false)
+  @Column
+  'campo8': string;
+
+  
   @BelongsTo(() => Sucursal, 'co_sucu')
   sucursal: Sucursal;
 
   @BelongsTo(() => ProductoLinea, 'co_lin')
   linea: ProductoLinea;
 
-  @BelongsTo(() => ProductoSubLinea, 'co_lin')
+  @BelongsTo(() => ProductoCategoria, 'co_cat')
+  categoria: ProductoCategoria;
+
+  @BelongsTo(() => ProductoSubLinea, 'co_subl')
   sublinea: ProductoSubLinea;
 
   static scope(name: string = 'defaultScope'): typeof Producto {

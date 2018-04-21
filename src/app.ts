@@ -1,14 +1,17 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as errorhandler from 'strong-error-handler';
-import {movies} from './routes/movies';
-import {actors} from './routes/actors';
+// import {movies} from './routes/movies';
+// import {actors} from './routes/actors';
 import {inicial} from './routes/database';
 import {almacens} from './routes/almacen';
 import {sucursals} from './routes/sucursal';
+import {productos} from './routes/producto';
 import {productolineas} from './routes/productolinea';
 import {productosublinea} from './routes/productosublinea';
+import {productocategoria} from './routes/productocategoria';
 import { Response, Request, NextFunction, ErrorRequestHandler } from "express";
+
 
 export const app = express();
 
@@ -29,12 +32,14 @@ app.use((req, res, next) => {
 });
 
 app.use('/', inicial);
-app.use('/movies', movies);
-app.use('/actors', actors);
+// app.use('/movies', movies);
+// app.use('/actors', actors);
 app.use('/almacenes', almacens);
+app.use('/productos', productos);
 app.use('/sucursales', sucursals);
 app.use('/lineas', productolineas);
 app.use('/sublineas', productosublinea);
+app.use('/categorias', productocategoria);
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response) {
