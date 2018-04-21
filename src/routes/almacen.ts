@@ -37,6 +37,25 @@ almacens.get('/', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+almacens.get('/help', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const retvalor = {
+      keyId: '001', name: 'nombre', co_sucu: '01', co_alma: '02', co_lin: '032', co_subl: '021',
+      campo1: 'string largo', campo2: 'string largo', campo3: 'string largo', campo4: 'string largo',
+      uni_venta: 'und', stock_act: '3212.21', rowguid: 'uuidv4()'
+    };
+
+    const almacenes = _returnJson(retvalor,
+      _paginate(1, 1, 1, 1));
+    res.status(200).json(almacenes);
+    
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(_errorObject(e, '/'));
+    next(e);
+  }
+});
+
 almacens.get('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();

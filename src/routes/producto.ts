@@ -41,6 +41,27 @@ productos.get('/', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+productos.get('/help', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const retvalor = {
+      keyId: '001', name: 'nombre', co_sucu:  '002', co_lin: '003', co_cat: '002', co_subl: '03',
+      co_prov: '0032342897', uni_venta: 'UND', uni_compra: 'UND', stock_act: '32.2', co_color: 'N',
+      fecha_reg: '2001/01/01', item: '001', ubicacion: 'BARCELONA', procedenci: 'PORTUGAL', campo1: 'STRING LARGO (80)',
+      campo2: 'STRING LARGO (80)', campo3: 'STRING LARGO (80)', campo4: 'STRING LARGO (80)', campo5: 'STRING LARGO (80)',
+      campo6: 'STRING LARGO (80)', campo7: 'STRING LARGO (80)', campo8: 'STRING LARGO (80)', rowguid: 'uuidv4()'
+    };
+
+    const ayudas = _returnJson(retvalor,
+      _paginate(1, 1, 1, 1));
+    res.status(200).json(ayudas);
+    
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(_errorObject(e, '/'));
+    next(e);
+  }
+});
+
 productos.get('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();

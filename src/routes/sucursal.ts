@@ -50,6 +50,22 @@ sucursals.get('/', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+sucursals.get('/help', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const retvalor = {
+      keyId: '001', name: 'nombre', co_sucu: '002', nro_fact: '2', rowguid: 'uuidv4()'
+    };
+    const sucursales = _returnJson(retvalor,
+      _paginate(1, 1, 1, 1));
+    res.status(200).json(sucursales);
+    
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(_errorObject(e, '/'));
+    next(e);
+  }
+});
+
 sucursals.get('/:keyId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
