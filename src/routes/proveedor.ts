@@ -226,7 +226,7 @@ function _clearObjectAll(_objectAll) {
   _objectAll.forEach((tObject) => {
     objectAll.push(_clearObject(tObject));
   });
- return objectAll;
+  return objectAll;
 }
 
 function _clearObject(_object) {

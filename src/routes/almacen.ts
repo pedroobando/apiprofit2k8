@@ -209,7 +209,7 @@ function _clearAlmacenAll(_objectAll) {
   _objectAll.forEach((tObject) => {
     objectAll.push({co_sub: tObject.co_sub.trim(), des_sub: tObject.des_sub.trim()});
   });
- return objectAll;
+  return objectAll;
 }
 
 function _clearObject(_object) {
