@@ -219,6 +219,7 @@ function _clearObjectAll(_objectAll) {
 
 function _clearObject(_object) {
   return {
+    keyId: _object.co_subl.trim(),
     co_subl: _object.co_subl.trim(),
     name: _object.subl_des.trim(),
     co_lin: _object.co_lin.trim(),

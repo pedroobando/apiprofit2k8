@@ -172,19 +172,31 @@ function _clearObjectAll(_objectAll) {
  return objectAll;
 }
 
-function _clearAlmacenAll(_objectAll) {
-  const objectAll = [];
-  _objectAll.forEach((tObject) => {
-    objectAll.push({co_sub: tObject.co_sub.trim(), des_sub: tObject.des_sub.trim()});
-  });
- return objectAll;
-}
+// function _clearAlmacenAll(_objectAll) {
+//   const objectAll = [];
+//   _objectAll.forEach((tObject) => {
+//     objectAll.push({co_sub: tObject.co_sub.trim(), des_sub: tObject.des_sub.trim()});
+//   });
+//  return objectAll;
+// }
 
 function _clearObject(_object) {
   return {
+    keyId: _object.co_alma.trim(),
     co_alma: _object.co_alma.trim(),
+    co_sucu: _object.co_sucu.trim(),
     name: _object.alma_des.trim(),
-    co_sucu: _object.co_sucu.trim()
+    campos: {
+      campo1: _object.campo1.trim(),
+      campo2: _object.campo2.trim(),
+      campo3: _object.campo3.trim(),
+      campo4: _object.campo4.trim()
+      // campo5: _object.campo5.trim(),
+      // campo6: _object.campo6.trim(),
+      // campo7: _object.campo7.trim(),
+      // campo8: _object.campo8.trim(),
+    },
+    rowguid: _object.rowguid
   };
 }
 

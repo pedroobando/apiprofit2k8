@@ -10,6 +10,7 @@ import {productos} from './routes/producto';
 import {productolineas} from './routes/productolinea';
 import {productosublinea} from './routes/productosublinea';
 import {productocategoria} from './routes/productocategoria';
+import {proveedores} from './routes/proveedor';
 import { Response, Request, NextFunction, ErrorRequestHandler } from "express";
 
 
@@ -40,6 +41,7 @@ app.use('/sucursales', sucursals);
 app.use('/lineas', productolineas);
 app.use('/sublineas', productosublinea);
 app.use('/categorias', productocategoria);
+app.use('/proveedores', proveedores);
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response) {

@@ -242,10 +242,10 @@ productos.put('/:keyId', async (req: Request, res: Response, next: NextFunction)
     const Id: string = req.params.keyId.trim();
     // Verificacion de la propiedad name, para su respectivo guardado
     // en la base de datos
-    if (typeof _object.name !== "undefined") {
-      _object.art_des = _object.name;  
+    if (typeof req.body.name !== "undefined") {
+      req.body.art_des = req.body.name;  
     }
-    await Producto.update(_object,
+    await Producto.update(req.body,
     {
       where: {
         co_art: Id
@@ -304,6 +304,7 @@ function _clearObjectAll(_objectAll) {
 
 function _clearObject(_object) {
   return {
+    keyId: _object.co_art.trim(),
     co_art: _object.co_art.trim(),
     name: _object.art_des.trim(),
     stock_act: _object.stock_act,

@@ -223,11 +223,23 @@ function _clearObject(_object) {
 
 function _clearSucursalObject(_object) {
   return {
-    co_sub: _object.co_sub.trim(), name: _object.des_sub.trim(), co_alma: _object.co_alma.trim(),
+    co_sub: _object.co_sub.trim(),
+    name: _object.des_sub.trim(),
+    co_alma: _object.co_alma.trim(),
     alma_des: _object.sucursal.alma_des.trim(), 
     co_sucu: _object.co_sucu.trim(),
-    campos: { campo1: _object.campo1.trim(), campo2: _object.campo2.trim(), campo3: _object.campo3.trim(), campo4: _object.campo4.trim() }, 
-    active: { noventa: _object.noventa, nocompra: _object.nocompra, materiales: _object.materiales, produccion: _object.produccion }
+    campos: {
+      campo1: _object.campo1.trim(),
+      campo2: _object.campo2.trim(),
+      campo3: _object.campo3.trim(),
+      campo4: _object.campo4.trim()
+    }, 
+    active: {
+      noventa: _object.noventa,
+      nocompra: _object.nocompra,
+      materiales: _object.materiales,
+      produccion: _object.produccion
+    }
   };
 }
 

@@ -176,6 +176,7 @@ function _clearObjectAll(_objectAll) {
 
 function _clearObject(_object) {
   return {
+    keyId: _object.co_lin.trim(),
     co_lin: _object.co_lin.trim(),
     name: _object.lin_des.trim(),
     co_sucu: _object.co_sucu.trim(),

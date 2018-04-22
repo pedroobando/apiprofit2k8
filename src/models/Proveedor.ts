@@ -3,16 +3,16 @@ import {
   Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, BelongsTo, DefaultScope
 } from "sequelize-typescript";
 import { Sucursal } from "./Sucursal";
-import { ProductoLinea } from "./ProductoLinea";
-import { ProductoSubLinea } from "./ProductoSubLinea";
-import { ProductoCategoria } from "./ProductoCategoria";
+// import { ProductoLinea } from "./ProductoLinea";
+// import { ProductoSubLinea } from "./ProductoSubLinea";
+// import { ProductoCategoria } from "./ProductoCategoria";
 
 const _dateparse = new Date();
 const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
 
 @DefaultScope({
-  attributes: ['co_prov', 'prov_des', 'co_seg', 'co_cat', 'co_sucu', 'co_subl', 'co_prov',
-  'uni_compra', 'uni_venta', 'stock_act', 'co_color', 'fecha_reg', 'item', 'ubicacion', 'procedenci',
+  attributes: ['co_prov', 'prov_des', 'co_seg', 'co_zon', 'inactivo', 'direcc1', 'direcc2',
+  'telefonos', 'respons', 'fecha_reg', 'co_sucu', 'fecha_reg', 'co_pais', 'ciudad', 'zip', 'procedenci',
   'campo1', 'campo2', 'campo3', 'campo4', 'campo5', 'campo6', 'campo7', 'campo8',
   'rowguid' ]
 })
@@ -116,7 +116,14 @@ export class Proveedor extends Model<Proveedor> {
   @Column({
     type: DataType.STRING
   })
-  'zip': string;  
+  'zip': string;
+  
+  @Default('')
+  @AllowNull(false)
+  @Column({
+    type: DataType.STRING
+  })
+  'procedenci': string; 
   
   @Default('')
   @AllowNull(false)
@@ -159,8 +166,8 @@ export class Proveedor extends Model<Proveedor> {
   'campo8': string;
 
   
-  // @BelongsTo(() => Sucursal, 'co_sucu')
-  // sucursal: Sucursal;
+  @BelongsTo(() => Sucursal, 'co_sucu')
+  sucursal: Sucursal;
 
   // @BelongsTo(() => ProductoLinea, 'co_lin')
   // linea: ProductoLinea;
