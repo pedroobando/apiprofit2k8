@@ -7,16 +7,16 @@ import { Almacen } from './Almacen';
 const _dateparse = new Date();
 const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
 
-@Scopes({
-  almacens: {
-    include: [
-      {
-        model: () => Almacen,
-        through: {attributes: []},
-      },
-    ],
-  },
-})
+// @Scopes({
+//   almacens: {
+//     include: [
+//       {
+//         model: () => Almacen,
+//         through: {attributes: []},
+//       },
+//     ],
+//   },
+// })
 
 @DefaultScope({
   attributes: ['co_alma', 'alma_des', 'co_sucu', 'campo1', 'campo2', 'campo3', 'campo4']
@@ -743,8 +743,6 @@ export class Sucursal extends Model<Sucursal> {
     return super.scope.call(this, name);
   }
 }
-
-
 
 // sucursal.associate = function(models) {
 //   // associations can be defined here

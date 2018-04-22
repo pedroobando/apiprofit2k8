@@ -3,6 +3,7 @@ import {
   Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, BelongsTo, DefaultScope
 } from "sequelize-typescript";
 import { Sucursal } from "./Sucursal";
+import { Segmento } from "./Segmento";
 // import { ProductoLinea } from "./ProductoLinea";
 // import { ProductoSubLinea } from "./ProductoSubLinea";
 // import { ProductoCategoria } from "./ProductoCategoria";
@@ -169,8 +170,8 @@ export class Proveedor extends Model<Proveedor> {
   @BelongsTo(() => Sucursal, 'co_sucu')
   sucursal: Sucursal;
 
-  // @BelongsTo(() => ProductoLinea, 'co_lin')
-  // linea: ProductoLinea;
+  @BelongsTo(() => Segmento, 'co_seg')
+  segmento: Segmento;
 
   // @BelongsTo(() => ProductoCategoria, 'co_cat')
   // categoria: ProductoCategoria;
