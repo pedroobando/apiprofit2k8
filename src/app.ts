@@ -14,6 +14,7 @@ import {proveedores} from './routes/proveedor';
 import {transportes} from './routes/transporte';
 import { Response, Request, NextFunction, ErrorRequestHandler } from "express";
 import { segmentos } from './routes/segmento';
+import { zonas } from './routes/zonas';
 
 export const app = express();
 
@@ -45,6 +46,7 @@ app.use('/categorias', productocategoria);
 app.use('/proveedores', proveedores);
 app.use('/transportes', transportes);
 app.use('/segmentos', segmentos);
+app.use('/zonas', zonas);
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response) {
