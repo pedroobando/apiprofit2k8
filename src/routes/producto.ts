@@ -33,7 +33,12 @@ productos.get('/', async (req: Request, res: Response, next: NextFunction) => {
       });
 
     res.status(200).json(losProductos);
-    
+
+    console.log(`limitPage: ${limitPage}`);
+    console.log(`activePage: ${activePage}`);
+    console.log(`offset2: ${offset2}`);
+
+
   } catch (e) {
     // console.log(e);
     res.status(500).json(_errorObject(e, '/'));
