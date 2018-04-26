@@ -12,10 +12,11 @@ const _dateparse = new Date();
 const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
 
 @DefaultScope({
-  attributes: ['co_prov', 'prov_des', 'co_seg', 'co_zon', 'inactivo', 'direcc1', 'direcc2',
-  'telefonos', 'respons', 'fecha_reg', 'co_sucu', 'fecha_reg', 'co_pais', 'ciudad', 'zip', 'procedenci',
+  attributes: ['co_prov', 'prov_des', 'co_seg', 'co_zon', 'inactivo', 'direc1', 'direc2',
+  'telefonos', 'respons', 'co_sucu', 'co_pais', 'ciudad', 'zip', 'fecha_reg',
   'campo1', 'campo2', 'campo3', 'campo4', 'campo5', 'campo6', 'campo7', 'campo8',
   'rowguid' ]
+  // 'fecha_reg', 'procedenci'
 })
 @Table({tableName: 'prov'})
 export class Proveedor extends Model<Proveedor> {
@@ -57,14 +58,14 @@ export class Proveedor extends Model<Proveedor> {
   @Column({
     type: DataType.STRING
   })
-  'direcc1': string;
+  'direc1': string;
 
   @Default('')
   @AllowNull(false)
   @Column({
     type: DataType.STRING
   })
-  'direcc2': string;
+  'direc2': string;
 
   @Default('')
   @AllowNull(false)
@@ -119,12 +120,12 @@ export class Proveedor extends Model<Proveedor> {
   })
   'zip': string;
   
-  @Default('')
-  @AllowNull(false)
-  @Column({
-    type: DataType.STRING
-  })
-  'procedenci': string; 
+  // @Default('')
+  // @AllowNull(false)
+  // @Column({
+  //   type: DataType.STRING
+  // })
+  // 'procedenci': string; 
   
   @Default('')
   @AllowNull(false)

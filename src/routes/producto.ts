@@ -4,6 +4,7 @@ import { ProductoSubLinea } from '../models/ProductoSubLinea';
 import { Producto } from '../models/Producto';
 import { ProductoLinea } from '../models/ProductoLinea';
 import { ProductoCategoria } from '../models/ProductoCategoria';
+import { Proveedor } from '../models/Proveedor';
 
 export const productos = Router();
 const paginateSize: number = 40;
@@ -22,7 +23,7 @@ productos.get('/', async (req: Request, res: Response, next: NextFunction) => {
         limit: limitPage,
         offset: offset2,
         where: {art_des: {$like: `%${filtername}%`}},
-        include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+        include: [Sucursal, ProductoLinea, ProductoSubLinea, ProductoCategoria, Proveedor]
       }).then((objectAll) => {
         const totalItems: number = objectAll.count;
         const totalPage: number = Math.ceil(objectAll.count / limitPage);
@@ -34,13 +35,12 @@ productos.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
     res.status(200).json(losProductos);
 
-    console.log(`limitPage: ${limitPage}`);
-    console.log(`activePage: ${activePage}`);
-    console.log(`offset2: ${offset2}`);
-
+    // console.log(`limitPage: ${limitPage}`);
+    // console.log(`activePage: ${activePage}`);
+    // console.log(`offset2: ${offset2}`);
 
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     res.status(500).json(_errorObject(e, '/'));
     next(e);
   }
@@ -130,7 +130,7 @@ productos.get('/porproveedor/:keyId', async (req: Request, res: Response, next: 
         limit: limitPage,
         offset: offset2,
         where: {art_des: {$like: `%${filtername}%`}, co_prov: IdProveedor },
-        include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+        include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria, Proveedor]
       }).then((objectAll) => {
         const totalItems: number = objectAll.count;
         const totalPage: number = Math.ceil(objectAll.count / limitPage);
@@ -179,7 +179,7 @@ productos.get('/:keyId', async (req: Request, res: Response, next: NextFunction)
 
     const lineas = await Producto.scope(req.query['scope']).findOne({
       where: { co_art: Id},
-      include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+      include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria, Proveedor]
     }).then((theObject) => {
       if (theObject) {
         numRequest = 200;
@@ -324,15 +324,15 @@ function _clearObject(_object) {
     },
     codigo: {
       co_sucu:  _object.co_sucu.trim(),
-      alma_des:  _object.sucursal.alma_des,
+      alma_des: !isNaN(_object.sucursal) ? '(SIN SUCURSAL)' : _object.sucursal.alma_des.trim(),
       co_lin: _object.co_lin.trim(),
-      lin_des: _object.linea.lin_des.trim(),
+      lin_des: !isNaN(_object.linea) ? '(SIN LINEA)' : _object.linea.lin_des.trim(),
       co_subl: _object.co_subl.trim(),
-      subl_des: _object.sublinea.subl_des.trim(),
+      subl_des: !isNaN(_object.sublinea) ? '(SIN SUB_LINEA)' : _object.sublinea.subl_des.trim(),
       co_cat: _object.co_cat.trim(),
-      cat_des: _object.categoria.cat_des.trim(),
-      co_prov: _object.co_prov.trim()
-      // prov_des: _object.proveedor.prov_des.trim()
+      cat_des: !isNaN(_object.categoria) ? '(SIN CATEGORIA)' : _object.categoria.cat_des.trim(),
+      co_prov: _object.co_prov.trim(),
+      prov_des: !isNaN(_object.proveedor) ? '(SIN PROVEEDOR)' : _object.proveedor.prov_des.trim()
     },
     campos: {
       campo1: _object.campo1.trim(),

@@ -142,7 +142,7 @@ segmentos.post('/', async (req: Request, res: Response, next: NextFunction) => {
       c_cuenta: req.body.c_cuenta,
       p_cuenta: req.body.p_cuenta,
       dis_cen: req.body.dis_cen,
-      fecha_reg: req.body.fecha_reg,
+      // fecha_reg: req.body.fecha_reg,
       campo1: req.body.campo1,
       campo2: req.body.campo2,
       campo3: req.body.campo3,
@@ -224,7 +224,7 @@ function _clearObject(_object) {
     p_cuenta: _object.p_cuenta,
     c_cuenta: _object.c_cuenta.trim(),
     dis_cen: _object.dis_cen.trim(),
-    fecha_reg: _object.fecha_reg,
+    // fecha_reg: _object.fecha_reg,
     codigo: {
       co_sucu:  _object.co_sucu.trim(),
       alma_des:  _object.sucursal.alma_des,

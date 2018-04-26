@@ -7,10 +7,11 @@ export const sequelize = new Sequelize({
   // username: 'postgres',
   // password: 'postgres',
   dialect: 'mssql',
-  database: 'demo',
-  username: 'sa',
-  password: 'S3rver2008r2',
-  host: 'VENGCSERVP03',
-  // port: 1433,
+  database: 'GRASA_ADEMO',
+  username: 'profit',
+  password: 'profit',
+  host: 'grasacanetuno.ddns.net',
+  // host: 'grasacasatelca.ddns.net',
+  // port: 1435,
   modelPaths: [__dirname + '/models']
 });

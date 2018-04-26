@@ -14,9 +14,10 @@ const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
 
 @DefaultScope({
   attributes: ['co_seg', 'seg_des', 'c_cuenta', 'p_cuenta', 'dis_cen',
-  'co_sucu', 'fecha_reg',
+  'co_sucu',
   'campo1', 'campo2', 'campo3', 'campo4',
   'rowguid' ]
+  // 'fecha_reg',
 })
 @Table({tableName: 'segmento'})
 export class Segmento extends Model<Segmento> {
@@ -55,10 +56,10 @@ export class Segmento extends Model<Segmento> {
   })
   'dis_cen': string;
 
-  @Default(_dateparse)
-  @AllowNull(false)
-  @Column
-  'fecha_reg': Date;
+  // @Default(_dateparse)
+  // @AllowNull(false)
+  // @Column
+  // 'fecha_reg': Date;
 
   @Default('02')
   @AllowNull(false)

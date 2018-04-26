@@ -37,7 +37,7 @@ zonas.get('/', async (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json(lasZonas);
     
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     res.status(500).json(_errorObject(e, '/'));
     next(e);
   }
@@ -71,7 +71,7 @@ zonas.get('/porsucursal/:keyId', async (req: Request, res: Response, next: NextF
     res.status(200).json(lasZonas);
     
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     res.status(500).json(_errorObject(e, '/'));
     next(e);
   }
@@ -226,7 +226,7 @@ function _clearObject(_object) {
     dis_cen: _object.dis_cen.trim(),
     codigo: {
       co_sucu:  _object.co_sucu.trim(),
-      alma_des:  _object.sucursal.alma_des,
+      alma_des: isNaN(_object) ? '' : _object.sucursal.alma_des.trim(),
     },
     campos: {
       campo1: _object.campo1.trim(),
