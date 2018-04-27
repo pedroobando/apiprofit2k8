@@ -222,7 +222,7 @@ function _clearObject(_object) {
     dis_cen: _object.dis_cen.trim(),
     codigo: {
       co_sucu:  _object.co_sucu.trim(),
-      alma_des: !isNaN(_object.sucursal) ? '(SIN SUCURSAL)' : _object.sucursal.alma_des.trim(),
+      alma_des: !isNaN(_object.sucursal) ? '(SIN ALMACEN)' : _object.sucursal.alma_des.trim()
     },
     campos: {
       campo1: _object.campo1.trim(),
