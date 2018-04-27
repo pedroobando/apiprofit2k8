@@ -6,6 +6,7 @@ import { Sucursal } from "./Sucursal";
 import { ProductoLinea } from "./ProductoLinea";
 import { ProductoSubLinea } from "./ProductoSubLinea";
 import { ProductoCategoria } from "./ProductoCategoria";
+import { Proveedor } from "./Proveedor";
 
 const _dateparse = new Date();
 const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
@@ -164,18 +165,21 @@ export class Producto extends Model<Producto> {
   'campo8': string;
 
   
-  @BelongsTo(() => Sucursal, 'co_sucu')
+  @BelongsTo(() => Sucursal, {foreignKey: 'co_sucu', targetKey: 'co_alma'})
   sucursal: Sucursal;
 
-  @BelongsTo(() => ProductoLinea, 'co_lin')
+  @BelongsTo(() => ProductoLinea, {foreignKey: 'co_lin', targetKey: 'co_lin'})
   linea: ProductoLinea;
 
-  @BelongsTo(() => ProductoCategoria, 'co_cat')
-  categoria: ProductoCategoria;
-
-  @BelongsTo(() => ProductoSubLinea, 'co_subl')
+  @BelongsTo(() => ProductoSubLinea, {foreignKey: 'co_subl', scope: { co_lin: {$col: 'Producto.co_lin'} }, targetKey: 'co_subl'})
   sublinea: ProductoSubLinea;
 
+  @BelongsTo(() => ProductoCategoria, {foreignKey: 'co_cat', targetKey: 'co_cat'})
+  categoria: ProductoCategoria;
+
+  @BelongsTo(() => Proveedor, {foreignKey: 'co_prov', targetKey: 'co_prov'})
+  proveedor: ProductoCategoria;
+  
   static scope(name: string = 'defaultScope'): typeof Producto {
     return super.scope.call(this, name);
   }

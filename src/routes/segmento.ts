@@ -2,7 +2,7 @@ import {Router, Request, Response, NextFunction} from 'express';
 import { Sucursal } from '../models/Sucursal';
 // import { ProductoSubLinea } from '../models/ProductoSubLinea';
 import { Segmento } from '../models/Segmento';
-import { Proveedor } from '../models/Proveedor';
+// import { Proveedor } from '../models/Proveedor';
 // import { ProductoLinea } from '../models/ProductoLinea';
 // import { ProductoCategoria } from '../models/ProductoCategoria';
 
@@ -36,7 +36,7 @@ segmentos.get('/', async (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json(losSegmentos);
     
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     res.status(500).json(_errorObject(e, '/'));
     next(e);
   }
@@ -142,7 +142,7 @@ segmentos.post('/', async (req: Request, res: Response, next: NextFunction) => {
       c_cuenta: req.body.c_cuenta,
       p_cuenta: req.body.p_cuenta,
       dis_cen: req.body.dis_cen,
-      fecha_reg: req.body.fecha_reg,
+      // fecha_reg: req.body.fecha_reg,
       campo1: req.body.campo1,
       campo2: req.body.campo2,
       campo3: req.body.campo3,
@@ -221,13 +221,13 @@ function _clearObject(_object) {
     keyId: _object.co_seg.trim(),
     co_seg: _object.co_seg.trim(),
     name: _object.seg_des.trim(),
-    p_cuenta: _object.p_cuenta,
+    p_cuenta: _object.p_cuenta.trim(),
     c_cuenta: _object.c_cuenta.trim(),
     dis_cen: _object.dis_cen.trim(),
-    fecha_reg: _object.fecha_reg,
+    // fecha_reg: _object.fecha_reg,
     codigo: {
       co_sucu:  _object.co_sucu.trim(),
-      alma_des:  _object.sucursal.alma_des,
+      alma_des: !isNaN(_object.sucursal) ? '(SIN ALMACEN)' : _object.sucursal.alma_des.trim()
     },
     campos: {
       campo1: _object.campo1.trim(),

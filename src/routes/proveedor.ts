@@ -5,6 +5,8 @@ import { Proveedor } from '../models/Proveedor';
 import { Segmento } from '../models/Segmento';
 // import { ProductoLinea } from '../models/ProductoLinea';
 // import { ProductoCategoria } from '../models/ProductoCategoria';
+import { Zona } from '../models/Zona';
+import { segmentos } from './segmento';
 
 export const proveedores = Router();
 const paginateSize: number = 40;
@@ -23,7 +25,7 @@ proveedores.get('/', async (req: Request, res: Response, next: NextFunction) => 
         limit: limitPage,
         offset: offset2,
         where: {prov_des: {$like: `%${filtername}%`}},
-        include: [Sucursal, Segmento]
+        include: [Sucursal, Segmento, Zona]
       }).then((objectAll) => {
         const totalItems: number = objectAll.count;
         const totalPage: number = Math.ceil(objectAll.count / limitPage);
@@ -57,7 +59,7 @@ proveedores.get('/porsucursal/:keyId', async (req: Request, res: Response, next:
         limit: limitPage,
         offset: offset2,
         where: {prov_des: {$like: `%${filtername}%`}, co_sucu: Id},
-        include: [Sucursal, Segmento]
+        include: [Sucursal, Segmento, Zona]
       }).then((objectAll) => {
         const totalItems: number = objectAll.count;
         const totalPage: number = Math.ceil(objectAll.count / limitPage);
@@ -80,13 +82,13 @@ proveedores.get('/help', async (req: Request, res: Response, next: NextFunction)
   try {
     const retvalor = {
       keyId: '001', co_prov: '001', name: 'nombre', co_sucu:  '002', co_seg: '003', co_zon: '002', inactivo: '1',
-      direcc1: 'direcc1', direcc2: 'direcc2', telefonos: '0032342897', respons: 'UND', fecha_reg: '20010212', co_pais: '007',
-      ciudad: 'VALENCIA', zip: '0932', procedenci: 'NAC',
+      direc1: 'direcc1', direc2: 'direcc2', telefonos: '0032342897', respons: 'UND', fecha_reg: '20010212', co_pais: '007',
+      ciudad: 'VALENCIA', zip: '0932',
       campo1: 'STRING LARGO (80)', campo2: 'STRING LARGO (80)', campo3: 'STRING LARGO (80)', campo4: 'STRING LARGO (80)',
       campo5: 'STRING LARGO (80)', campo6: 'STRING LARGO (80)', campo7: 'STRING LARGO (80)', campo8: 'STRING LARGO (80)',
       rowguid: 'rowguid'
     };
-
+    // , procedenci: 'NAC',
     const ayudas = _returnJson(retvalor,
       _paginate(1, 1, 1, 1));
     res.status(200).json(ayudas);
@@ -108,7 +110,7 @@ proveedores.get('/:keyId', async (req: Request, res: Response, next: NextFunctio
 
     const lineas = await Proveedor.scope(req.query['scope']).findOne({
       where: { co_prov: Id},
-      include: [Sucursal, Segmento]
+      include: [Sucursal, Segmento, Zona]
     }).then((theObject) => {
       if (theObject) {
         numRequest = 200;
@@ -144,15 +146,15 @@ proveedores.post('/', async (req: Request, res: Response, next: NextFunction) =>
       co_seg: req.body.co_seg,
       co_zon: req.body.co_zon,
       inactivo: req.body.inactivo,
-      direcc1: req.body.direcc1,
-      direcc2: req.body.direcc2,
+      direc1: req.body.direc1,
+      direc2: req.body.direc2,
       telefonos: req.body.telefonos,
       respons: req.body.respons,
       co_pais: req.body.co_pais,
       ciudad: req.body.ciudad,
       fecha_reg: req.body.fecha_reg,
       zip: req.body.zip,
-      procedenci: req.body.procedenci,
+      // procedenci: req.body.procedenci,
       campo1: req.body.campo1,
       campo2: req.body.campo2,
       campo3: req.body.campo3,
@@ -236,20 +238,21 @@ function _clearObject(_object) {
     co_prov: _object.co_prov.trim(),
     name: _object.prov_des.trim(),
     inactivo: _object.inactivo,
-    direcc1: _object.direcc1.trim(),
-    direcc2: _object.direcc2.trim(),
+    direc1: _object.direc1.trim(),
+    direc2: _object.direc2.trim(),
     telefonos: _object.telefonos.trim(),
     respons: _object.respons.trim(),
     ciudad: _object.ciudad.trim(),
     fecha_reg: _object.fecha_reg,
     zip: _object.zip.trim(),
-    procedenci: _object.procedenci.trim(),
+    // procedenci: _object.procedenci.trim(),
     codigo: {
       co_sucu:  _object.co_sucu.trim(),
-      alma_des:  _object.sucursal.alma_des,
+      alma_des: !isNaN(_object.sucursal) ? '(SIN ALMACEN)' : _object.sucursal.alma_des.trim(),
       co_seg: _object.co_seg.trim(),
-      seg_des: _object.segmento.seg_des,
+      seg_des:  !isNaN(_object.segmento) ? '(SIN SEGMENTO)' : _object.segmento.seg_des.trim(),
       co_zon: _object.co_zon.trim(),
+      zon_des:  !isNaN(_object.zona) ? '(SIN ZONA)' : _object.zona.zon_des.trim(),
       co_pais: _object.co_pais.trim(),
     },
     campos: {

@@ -1,11 +1,7 @@
 import {Router, Request, Response, NextFunction} from 'express';
-import { Sucursal } from '../models/Sucursal';
-// import { ProductoSubLinea } from '../models/ProductoSubLinea';
-import { Zona } from '../models/Zona';
 
-// import { Proveedor } from '../models/Proveedor';
-// import { ProductoLinea } from '../models/ProductoLinea';
-// import { ProductoCategoria } from '../models/ProductoCategoria';
+import { Zona } from '../models/Zona';
+import { Sucursal } from '../models/Sucursal';
 
 export const zonas = Router();
 const paginateSize: number = 40;
@@ -37,7 +33,7 @@ zonas.get('/', async (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json(lasZonas);
     
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     res.status(500).json(_errorObject(e, '/'));
     next(e);
   }
@@ -71,7 +67,7 @@ zonas.get('/porsucursal/:keyId', async (req: Request, res: Response, next: NextF
     res.status(200).json(lasZonas);
     
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     res.status(500).json(_errorObject(e, '/'));
     next(e);
   }
@@ -226,7 +222,7 @@ function _clearObject(_object) {
     dis_cen: _object.dis_cen.trim(),
     codigo: {
       co_sucu:  _object.co_sucu.trim(),
-      alma_des:  _object.sucursal.alma_des,
+      alma_des: !isNaN(_object.sucursal) ? '(SIN SUCURSAL)' : _object.sucursal.alma_des.trim(),
     },
     campos: {
       campo1: _object.campo1.trim(),

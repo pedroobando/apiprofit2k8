@@ -88,7 +88,7 @@ export class Zona extends Model<Zona> {
   @Column
   'campo4': string;
 
-  @BelongsTo(() => Sucursal, 'co_sucu')
+  @BelongsTo(() => Sucursal, {foreignKey: 'co_sucu', targetKey: 'co_alma'})
   sucursal: Sucursal;
 
   // @HasMany(() => Proveedor, 'co_prov')
