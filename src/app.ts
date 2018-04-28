@@ -3,6 +3,8 @@ import * as bodyParser from 'body-parser';
 import * as errorhandler from 'strong-error-handler';
 // import {movies} from './routes/movies';
 // import {actors} from './routes/actors';
+import { Response, Request, NextFunction, ErrorRequestHandler } from "express";
+
 import {inicial} from './routes/database';
 import {almacens} from './routes/almacen';
 import {sucursals} from './routes/sucursal';
@@ -12,7 +14,6 @@ import {productosublinea} from './routes/productosublinea';
 import {productocategoria} from './routes/productocategoria';
 import {proveedores} from './routes/proveedor';
 import {transportes} from './routes/transporte';
-import { Response, Request, NextFunction, ErrorRequestHandler } from "express";
 import { segmentos } from './routes/segmento';
 import { zonas } from './routes/zonas';
 

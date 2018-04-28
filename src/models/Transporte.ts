@@ -11,7 +11,7 @@ const _dateparse = new Date();
 const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
 
 @DefaultScope({
-  attributes: ['co_tran', 'tran_des', 'resp_tra', 'co_sucu', 'fecha_reg',
+  attributes: ['co_tran', 'des_tran', 'resp_tra', 'co_sucu', 
   'campo1', 'campo2', 'campo3', 'campo4',
   'rowguid' ]
 })
@@ -27,17 +27,12 @@ export class Transporte extends Model<Transporte> {
   @AllowNull(false)
   @Default('')
   @Column
-  'tran_des': string;
+  'des_tran': string;
 
   @Default('')
   @AllowNull(false)
   @Column
   'resp_tra': string;
-
-  @Default(_dateparse)
-  @AllowNull(false)
-  @Column
-  'fecha_reg': Date;
 
   @Default('02')
   @AllowNull(false)
