@@ -16,7 +16,10 @@ inicial.get('', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const index = [
       {inicio: 'Inicio de la aplicacion'},
-      {version: [{activa: 'v1'}, {fecha_inicio: '2018-03-28', paradoen: '2018-05-03', }]}
+      {version: [{activa: 'v1'}, {fecha_inicio: '2018-03-28', fecha_final: '2018-05-03', }]},
+      {rutas: [
+        'http://localhost:3000/almacenes'
+      ] }
     ];
     res.json(await {
       status: 200,
