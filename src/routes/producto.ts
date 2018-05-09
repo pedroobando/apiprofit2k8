@@ -60,7 +60,8 @@ productos.get('/porlinea/:keyId', async (req: Request, res: Response, next: Next
         limit: limitPage,
         offset: offset2,
         where: {art_des: {$like: `%${filtername}%`}, co_lin: Id},
-        include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+        // include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+        include: [Sucursal, ProductoLinea, ProductoSubLinea, ProductoCategoria, Proveedor]
       }).then((objectAll) => {
         const totalItems: number = objectAll.count;
         const totalPage: number = Math.ceil(objectAll.count / limitPage);
@@ -73,7 +74,7 @@ productos.get('/porlinea/:keyId', async (req: Request, res: Response, next: Next
     res.status(200).json(losProductos);
     
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     res.status(500).json(_errorObject(e, '/'));
     next(e);
   }
@@ -95,7 +96,8 @@ productos.get('/porlinea/:keyId/porsublinea/:keyIdSublinea', async (req: Request
         limit: limitPage,
         offset: offset2,
         where: {art_des: {$like: `%${filtername}%`}, co_lin: IdLinea, co_subl: IdSubLinea },
-        include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+        // include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+        include: [Sucursal, ProductoLinea, ProductoSubLinea, ProductoCategoria, Proveedor]
       }).then((objectAll) => {
         const totalItems: number = objectAll.count;
         const totalPage: number = Math.ceil(objectAll.count / limitPage);
@@ -178,7 +180,7 @@ productos.get('/:keyId', async (req: Request, res: Response, next: NextFunction)
 
     const lineas = await Producto.scope(req.query['scope']).findOne({
       where: { co_art: Id},
-      include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria, Proveedor]
+      include: [Sucursal, ProductoLinea, ProductoSubLinea, ProductoCategoria, Proveedor]
     }).then((theObject) => {
       if (theObject) {
         numRequest = 200;
