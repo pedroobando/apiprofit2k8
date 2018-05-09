@@ -1,6 +1,7 @@
 import {Router, Request, Response, NextFunction} from 'express';
 import {Sucursal} from '../models/Sucursal';
 import {Almacen} from '../models/Almacen';
+import {Global} from '../routes/global';
 
 export const sucursals = Router();
 const paginateSize: number = 40;
@@ -80,7 +81,7 @@ sucursals.get('/:keyId', async (req: Request, res: Response, next: NextFunction)
     }).then((theObject) => {
       if (theObject) {
         numRequest = 200;
-        return {data: _clearObject(theObject), rows: _clearAlmacenAll(theObject.almacenes)};  
+        return {data: _clearObject(theObject), rows: _clearAlmacenAll(theObject.almacenes)};
       } else {
         numRequest = 404;
         return {data: {co_alma: '0', name: ''}};
@@ -172,13 +173,13 @@ function _clearObjectAll(_objectAll) {
   return objectAll;
 }
 
-// function _clearAlmacenAll(_objectAll) {
-//   const objectAll = [];
-//   _objectAll.forEach((tObject) => {
-//     objectAll.push({co_sub: tObject.co_sub.trim(), des_sub: tObject.des_sub.trim()});
-//   });
-//  return objectAll;
-// }
+function _clearAlmacenAll(_objectAll) {
+  const objectAll = [];
+  _objectAll.forEach((tObject) => {
+    objectAll.push({co_sub: tObject.co_sub.trim(), des_sub: tObject.des_sub.trim()});
+  });
+  return objectAll;
+}
 
 function _clearObject(_object) {
   return {

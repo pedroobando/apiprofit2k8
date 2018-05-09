@@ -11,8 +11,8 @@ export const sequelize = new Sequelize({
   // database: 'DEMO',
   username: 'profit',
   password: 'profit',
-  host: 'grasacaccs.ddns.net',
-  // host: 'grasacanetuno.ddns.net',
+  // host: 'grasacaccs.ddns.net',
+  host: 'grasacanetuno.ddns.net',
   // host: 'grasacasatelca.ddns.net',
   // port: 1435,
   modelPaths: [__dirname + '/models']

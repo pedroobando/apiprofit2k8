@@ -32,7 +32,6 @@ productos.get('/', async (req: Request, res: Response, next: NextFunction) => {
         return _returnJson(_clearObjectAll(objectAll.rows),
           _paginate(activePage, totalPage, totalItems, showItem));
       });
-
     res.status(200).json(losProductos);
 
     // console.log(`limitPage: ${limitPage}`);
