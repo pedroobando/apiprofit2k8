@@ -80,9 +80,9 @@ productos.get('/porlinea/:keyId', async (req: Request, res: Response, next: Next
   }
 });
 
-productos.get('/porlinea/:keyId/porsublinea/:keyIdSublinea', async (req: Request, res: Response, next: NextFunction) => {
+productos.get('/porsublinea/:keyIdSublinea', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const IdLinea: string = req.params.keyId.trim();
+    // const IdLinea: string = req.params.keyId.trim();
     const IdSubLinea: string = req.params.keyIdSublinea.trim();
     const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
     const filtername: string = !req.query.filtername ? '' : req.query.filtername.toUpperCase();
@@ -95,7 +95,8 @@ productos.get('/porlinea/:keyId/porsublinea/:keyIdSublinea', async (req: Request
         order: [['art_des', order]],
         limit: limitPage,
         offset: offset2,
-        where: {art_des: {$like: `%${filtername}%`}, co_lin: IdLinea, co_subl: IdSubLinea },
+        where: {art_des: {$like: `%${filtername}%`}, co_subl: IdSubLinea },
+        // where: {art_des: {$like: `%${filtername}%`}, co_lin: IdLinea, co_subl: IdSubLinea },
         // include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
         include: [Sucursal, ProductoLinea, ProductoSubLinea, ProductoCategoria, Proveedor]
       }).then((objectAll) => {
