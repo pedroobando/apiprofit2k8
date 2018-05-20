@@ -16,6 +16,7 @@ import {proveedores} from './routes/proveedor';
 import {transportes} from './routes/transporte';
 import { segmentos } from './routes/segmento';
 import { zonas } from './routes/zonas';
+import { ajustes } from './routes/ajuste';
 
 export const app = express();
 
@@ -48,6 +49,7 @@ app.use('/proveedores', proveedores);
 app.use('/transportes', transportes);
 app.use('/segmentos', segmentos);
 app.use('/zonas', zonas);
+app.use('/ajustes', ajustes);
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response) {
