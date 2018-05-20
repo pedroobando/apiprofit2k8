@@ -3,9 +3,8 @@ Esto es una sencilla Api-restful, de la base de dato del sistema administrativo 
 
 ### Proposito
 Es ampliar el sistema profit 2k8 y aprovechar su base de datos. Creando nuevas aplicaciones e integrandolo a otros sistema(s) que estaran en desarrollo:
-    
-    aplicacion de solicitudes a almacen.
-    aplicacion de ordenes de trabajo.
+* aplicacion de solicitudes a almacen.
+* aplicacion de ordenes de trabajo.
 
 ### Desarollado bajo
     node.js (v8.10.0)
