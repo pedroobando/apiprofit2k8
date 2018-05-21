@@ -3,7 +3,7 @@ import {
     Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, BelongsTo, DefaultScope
   } from "sequelize-typescript";
 // import { Sucursal } from "./Sucursal";
-import { Proveedor } from "./Proveedor";
+// import { Proveedor } from "./Proveedor";
 import { Sucursal } from "./Sucursal";
 // import { ProductoLinea } from "./ProductoLinea";
 // import { ProductoSubLinea } from "./ProductoSubLinea";

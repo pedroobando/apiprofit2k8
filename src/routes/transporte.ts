@@ -15,10 +15,10 @@ transportes.get('/', async (req: Request, res: Response, next: NextFunction) => 
     const offset2 = limitPage * (activePage - 1);
 
     const losTransportes = await Transporte.scope(req.query['scope']).findAndCountAll({
-        order: [['tran_des', order]],
+        order: [['des_tran', order]],
         limit: limitPage,
         offset: offset2,
-        where: {tran_des: {$like: `%${filtername}%`}},
+        where: {des_tran: {$like: `%${filtername}%`}},
         include: [Sucursal]
       }).then((objectAll) => {
         const totalItems: number = objectAll.count;
@@ -49,10 +49,10 @@ transportes.get('/porsucursal/:keyId', async (req: Request, res: Response, next:
     const offset2 = limitPage * (activePage - 1);
 
     const losTransportes = await Transporte.scope(req.query['scope']).findAndCountAll({
-        order: [['tran_des', order]],
+        order: [['des_tran', order]],
         limit: limitPage,
         offset: offset2,
-        where: {tran_des: {$like: `%${filtername}%`}, co_sucu: Id},
+        where: {des_tran: {$like: `%${filtername}%`}, co_sucu: Id},
         include: [Sucursal]
       }).then((objectAll) => {
         const totalItems: number = objectAll.count;
@@ -76,7 +76,7 @@ transportes.get('/help', async (req: Request, res: Response, next: NextFunction)
   try {
     const retvalor = {
       keyId: '001', co_tran: '001', name: 'nombre', co_sucu:  '002', resp_tra: 'NOMBRE MEDIO (30)',
-      fecha_reg: '20010212',
+      // fecha_reg: '20010212',
       campo1: 'STRING LARGO (80)', campo2: 'STRING LARGO (80)', campo3: 'STRING LARGO (80)', campo4: 'STRING LARGO (80)',
       rowguid: 'rowguid'
     };
@@ -132,10 +132,9 @@ transportes.post('/', async (req: Request, res: Response, next: NextFunction) =>
     const uuidv4 = require('uuid/v4');
     await Transporte.create({
       co_tran: req.body.keyId,
-      tran_des: req.body.name,
+      des_tran: req.body.name,
       co_sucu:  req.body.co_sucu,
       resp_tra: req.body.resp_tra,
-      fecha_reg: req.body.fecha_reg,
       campo1: req.body.campo1,
       campo2: req.body.campo2,
       campo3: req.body.campo3,
@@ -158,7 +157,7 @@ transportes.put('/:keyId', async (req: Request, res: Response, next: NextFunctio
     // Verificacion de la propiedad name, para su respectivo guardado
     // en la base de datos
     if (typeof req.body.name !== "undefined") {
-      req.body.tran_des = req.body.name;  
+      req.body.des_tran = req.body.name;  
     }
     await Transporte.update(req.body,
     {
@@ -213,8 +212,7 @@ function _clearObject(_object) {
   return {
     keyId: _object.co_tran.trim(),
     co_tran: _object.co_tran.trim(),
-    name: _object.tran_des.trim(),
-    fecha_reg: _object.fecha_reg,
+    name: _object.des_tran.trim(),
     resp_tra: _object.resp_tra.trim(),
     codigo: {
       co_sucu:  _object.co_sucu.trim(),

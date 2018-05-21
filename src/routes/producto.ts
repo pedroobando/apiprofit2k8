@@ -13,14 +13,18 @@ productos.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
     const filtername: string = !req.query.filtername ? '' : req.query.filtername.toUpperCase();
+<<<<<<< HEAD
     const incluirAnulado: boolean = !req.query.incluiranulado ? false : (req.query.incluiranulado == 'true' ? true : false);
     
     
+=======
+>>>>>>> 486bce34e9d29635fd7be9669099f3e4f970cca2
     const limitPage: number = isNaN(req.query.limit) ? paginateSize : parseInt(req.query.limit);
     const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
     const offset2 = limitPage * (activePage - 1);
 
     const losProductos = await Producto.scope(req.query['scope']).findAndCountAll({
+<<<<<<< HEAD
       order: [['art_des', order]],
       limit: limitPage,
       offset: offset2,
@@ -34,6 +38,21 @@ productos.get('/', async (req: Request, res: Response, next: NextFunction) => {
       return _returnJson(_clearObjectAll(objectAll.rows),
         _paginate(activePage, totalPage, totalItems, showItem));
     });
+=======
+        order: [['art_des', order]],
+        limit: limitPage,
+        offset: offset2,
+        where: {art_des: {$like: `%${filtername}%`}},
+        include: [Sucursal, ProductoLinea, ProductoSubLinea, ProductoCategoria, Proveedor]
+      }).then((objectAll) => {
+        const totalItems: number = objectAll.count;
+        const totalPage: number = Math.ceil(objectAll.count / limitPage);
+        const showItem: number = (objectAll.rows.length);
+        // console.log(objectAll);
+        return _returnJson(_clearObjectAll(objectAll.rows),
+          _paginate(activePage, totalPage, totalItems, showItem));
+      });
+>>>>>>> 486bce34e9d29635fd7be9669099f3e4f970cca2
     res.status(200).json(losProductos);
 
     // console.log(`limitPage: ${limitPage}`);
@@ -62,7 +81,8 @@ productos.get('/porlinea/:keyId', async (req: Request, res: Response, next: Next
         limit: limitPage,
         offset: offset2,
         where: {art_des: {$like: `%${filtername}%`}, co_lin: Id},
-        include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+        // include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+        include: [Sucursal, ProductoLinea, ProductoSubLinea, ProductoCategoria, Proveedor]
       }).then((objectAll) => {
         const totalItems: number = objectAll.count;
         const totalPage: number = Math.ceil(objectAll.count / limitPage);
@@ -75,15 +95,15 @@ productos.get('/porlinea/:keyId', async (req: Request, res: Response, next: Next
     res.status(200).json(losProductos);
     
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     res.status(500).json(_errorObject(e, '/'));
     next(e);
   }
 });
 
-productos.get('/porlinea/:keyId/porsublinea/:keyIdSublinea', async (req: Request, res: Response, next: NextFunction) => {
+productos.get('/porsublinea/:keyIdSublinea', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const IdLinea: string = req.params.keyId.trim();
+    // const IdLinea: string = req.params.keyId.trim();
     const IdSubLinea: string = req.params.keyIdSublinea.trim();
     const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
     const filtername: string = !req.query.filtername ? '' : req.query.filtername.toUpperCase();
@@ -96,8 +116,10 @@ productos.get('/porlinea/:keyId/porsublinea/:keyIdSublinea', async (req: Request
         order: [['art_des', order]],
         limit: limitPage,
         offset: offset2,
-        where: {art_des: {$like: `%${filtername}%`}, co_lin: IdLinea, co_subl: IdSubLinea },
-        include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+        where: {art_des: {$like: `%${filtername}%`}, co_subl: IdSubLinea },
+        // where: {art_des: {$like: `%${filtername}%`}, co_lin: IdLinea, co_subl: IdSubLinea },
+        // include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria]
+        include: [Sucursal, ProductoLinea, ProductoSubLinea, ProductoCategoria, Proveedor]
       }).then((objectAll) => {
         const totalItems: number = objectAll.count;
         const totalPage: number = Math.ceil(objectAll.count / limitPage);
@@ -180,7 +202,7 @@ productos.get('/:keyId', async (req: Request, res: Response, next: NextFunction)
 
     const lineas = await Producto.scope(req.query['scope']).findOne({
       where: { co_art: Id},
-      include: [Sucursal, ProductoSubLinea, ProductoLinea, ProductoCategoria, Proveedor]
+      include: [Sucursal, ProductoLinea, ProductoSubLinea, ProductoCategoria, Proveedor]
     }).then((theObject) => {
       if (theObject) {
         numRequest = 200;
