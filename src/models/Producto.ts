@@ -13,9 +13,10 @@ const _rowGuidExport =  '00000000-0000-0000-0000-000000000000';
 
 @DefaultScope({
   attributes: ['co_art', 'art_des', 'co_lin', 'co_cat', 'co_sucu', 'co_subl', 'co_prov',
-  'uni_compra', 'uni_venta', 'stock_act', 'co_color', 'fecha_reg', 'item', 'ubicacion', 'procedenci',
+  'uni_compra', 'uni_venta', 'co_color', 'fecha_reg', 'item', 'ubicacion', 'procedenci',
+  'stock_act', 'stock_des', 'stock_com', 'stock_lle',
   'campo1', 'campo2', 'campo3', 'campo4', 'campo5', 'campo6', 'campo7', 'campo8',
-  'rowguid' ]
+  'rowguid', 'anulado' ]
 })
 @Table({tableName: 'art'})
 export class Producto extends Model<Producto> {
@@ -92,6 +93,27 @@ export class Producto extends Model<Producto> {
   })
   'stock_act': number;
 
+  @Default(0)
+  @AllowNull(false)
+  @Column({
+    type:  DataType.FLOAT
+  })
+  'stock_com': number;
+
+  @Default(0)
+  @AllowNull(false)
+  @Column({
+    type:  DataType.FLOAT
+  })
+  'stock_lle': number;
+
+  @Default(0)
+  @AllowNull(false)
+  @Column({
+    type:  DataType.FLOAT
+  })
+  'stock_des': number;
+
   @IsUUID(4)
   @Default(_rowGuidExport)
   @AllowNull(false)
@@ -123,6 +145,13 @@ export class Producto extends Model<Producto> {
     type: DataType.CHAR(10)
   })
   'procedenci': string;
+
+  @Default(false)
+  @AllowNull(false)
+  @Column({
+    type: DataType.BOOLEAN
+  })
+  'anulado': boolean;
 
   @Default('')
   @AllowNull(false)

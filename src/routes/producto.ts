@@ -13,26 +13,27 @@ productos.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
     const filtername: string = !req.query.filtername ? '' : req.query.filtername.toUpperCase();
+    const incluirAnulado: boolean = !req.query.incluiranulado ? false : (req.query.incluiranulado == 'true' ? true : false);
+    
     
     const limitPage: number = isNaN(req.query.limit) ? paginateSize : parseInt(req.query.limit);
     const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
     const offset2 = limitPage * (activePage - 1);
 
     const losProductos = await Producto.scope(req.query['scope']).findAndCountAll({
-        order: [['art_des', order]],
-        limit: limitPage,
-        offset: offset2,
-        where: {art_des: {$like: `%${filtername}%`}},
-        include: [Sucursal, ProductoLinea, ProductoSubLinea, ProductoCategoria, Proveedor]
-      }).then((objectAll) => {
-        const totalItems: number = objectAll.count;
-        const totalPage: number = Math.ceil(objectAll.count / limitPage);
-        const showItem: number = (objectAll.rows.length);
-        // console.log(objectAll);
-        return _returnJson(_clearObjectAll(objectAll.rows),
-          _paginate(activePage, totalPage, totalItems, showItem));
-      });
-
+      order: [['art_des', order]],
+      limit: limitPage,
+      offset: offset2,
+      where: {art_des: {$like: `%${filtername}%`}, anulado: incluirAnulado},
+      include: [Sucursal, ProductoLinea, ProductoSubLinea, ProductoCategoria, Proveedor]
+    }).then((objectAll) => {
+      const totalItems: number = objectAll.count;
+      const totalPage: number = Math.ceil(objectAll.count / limitPage);
+      const showItem: number = (objectAll.rows.length);
+      // console.log(objectAll);
+      return _returnJson(_clearObjectAll(objectAll.rows),
+        _paginate(activePage, totalPage, totalItems, showItem));
+    });
     res.status(200).json(losProductos);
 
     // console.log(`limitPage: ${limitPage}`);
@@ -217,11 +218,15 @@ productos.post('/', async (req: Request, res: Response, next: NextFunction) => {
       uni_venta: req.body.uni_venta,
       uni_compra: req.body.uni_venta,
       stock_act: req.body.stock_act,
+      stock_com: req.body.stock_com,
+      stock_des: req.body.stock_des,
+      stock_lle: req.body.stock_lle,
       co_color: req.body.co_color,
       fecha_reg: req.body.fecha_reg,
       item: req.body.item,
       ubicacion: req.body.ubicacion,
       procedenci: req.body.procedenci,
+      anulado: req.body.anulado,
       campo1: req.body.campo1,
       campo2: req.body.campo2,
       campo3: req.body.campo3,
@@ -312,12 +317,18 @@ function _clearObject(_object) {
     keyId: _object.co_art.trim(),
     co_art: _object.co_art.trim(),
     name: _object.art_des.trim(),
-    stock_act: _object.stock_act,
+    anulado: _object.anulado,
     co_color: _object.co_color.trim(),
     fecha_reg: _object.fecha_reg,
     item: _object.item.trim(),
     ubicacion: _object.ubicacion.trim(),
     procedenci: _object.procedenci.trim(),
+    stock: {
+      stock_act: _object.stock_act,
+      stock_com: _object.stock_com,
+      stock_des: _object.stock_des,
+      stock_lle: _object.stock_lle
+    },
     uni: {
       uni_venta: _object.uni_venta.trim(),
       uni_compra: _object.uni_compra.trim()
