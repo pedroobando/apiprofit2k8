@@ -178,7 +178,7 @@ export class Producto extends Model<Producto> {
   categoria: ProductoCategoria;
 
   @BelongsTo(() => Proveedor, {foreignKey: 'co_prov', targetKey: 'co_prov'})
-  proveedor: ProductoCategoria;
+  proveedor: Proveedor;
   
   static scope(name: string = 'defaultScope'): typeof Producto {
     return super.scope.call(this, name);
