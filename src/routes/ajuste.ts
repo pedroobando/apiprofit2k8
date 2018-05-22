@@ -2,6 +2,7 @@ import {Router, Request, Response, NextFunction} from 'express';
 import { Ajuste } from '../models/Ajuste';
 import { Sucursal } from '../models/Sucursal';
 import { AjusteDetalle } from '../models/AjusteDetalle';
+import { Producto } from '../models/Producto';
 
 export const ajustes = Router();
 const paginateSize: number = 40;
@@ -66,10 +67,37 @@ ajustes.get('/:keyId', async (req: Request, res: Response, next: NextFunction) =
   }
 });
 
-// ['ajue_num', 'fecha', 'motivo', 'total', 'seriales', 'feccom', 'numcom',
-// 'tasa', 'moneda', 'dis_cen', 'co_us_in', 'fe_us_in', 'co_us_mo', 'fe_us_mo', 'co_us_el', 'fe_us_el',
-// 'campo1', 'campo2', 'campo3', 'campo4', 'campo5', 'campo6', 'campo7', 'campo8',
-// 'revisado', 'trasnfe', 'anulada', 'aux01', 'aux02', 'produccion', 'imp_num', 'fact_num', 'co_sucu', 'rowguid' ]
+ajustes.get('/detalles/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const Id: string = req.params.keyId.trim();
+    let numRequest: number = 0;
+    if (!Id) {
+      return res.status(400).json(_clearObject({id: 0, name: '', active: false}));
+    }
+    const losAjustes = await AjusteDetalle.scope(req.query['scope']).findAndCountAll({
+      where: { ajue_num: Id},
+      include: [Producto]
+    }).then((theObject) => {
+      if (theObject) {
+        numRequest = 200;
+        const retDetalleItem = [];
+        theObject.rows.forEach((detalleItem) => { retDetalleItem.push(_clearObjectDetalle(detalleItem, true));
+        });
+        return { data: retDetalleItem };
+      } else {
+        numRequest = 404;
+        return {data: {ajue_num: '0', name: '' }};
+      }
+    }).catch((err) => {
+      console.log(err);
+      res.status(500).json(_errorObject(err, '/'));
+    });
+
+    res.status(numRequest).json(losAjustes);
+  } catch (e) {
+    next(e);
+  }
+});
 
 ajustes.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -169,6 +197,20 @@ ajustes.delete('/:keyId', async (req: Request, res: Response, next: NextFunction
   }
 });
 
+function _clearObjectWithDetalle(_objAjuste: Ajuste) {
+  const listAjusteWithDetalle = [];
+  try {
+    _objAjuste.ajustedetalles.forEach((itemDetalle) => {
+      listAjusteWithDetalle.push(_clearObjectDetalle(itemDetalle, false));
+    });
+  } catch (e) {
+    console.log(`Error _clearObjectWithDetalle - ${e.err} - ${e.Error} - ${e}`);
+  }
+  return {
+    ajuste: _clearObject(_objAjuste), detalle: listAjusteWithDetalle
+  };
+}
+
 function _clearObjectAll(_objectAll) {
   const objectAll = [];
   _objectAll.forEach((tObject) => {
@@ -176,12 +218,6 @@ function _clearObjectAll(_objectAll) {
   });
   return objectAll;
 }
-
-
-// ['ajue_num', 'fecha', 'motivo', 'total', 'seriales', 'feccom', 'numcom',
-// 'tasa', 'moneda', 'dis_cen', 'co_us_in', 'fe_us_in', 'co_us_mo', 'fe_us_mo', 'co_us_el', 'fe_us_el',
-// 'campo1', 'campo2', 'campo3', 'campo4', 'campo5', 'campo6', 'campo7', 'campo8',
-// 'revisado', 'trasnfe', 'anulada', 'aux01', 'aux02', 'produccion', 'imp_num', 'fact_num', 'co_sucu', 'rowguid' ]
 
 function _clearObject(_object: Ajuste) {
   return {
@@ -229,52 +265,56 @@ function _clearObject(_object: Ajuste) {
       campo8: _object.campo8.trim()
     },
     rowguid: _object.rowguid
+    // detalle: _object.ajustedetalles
   };
 }
 
-function _clearObjectWithDetalle(elNumAjuste: number) {
-  const _AjusteDetalle = [];
-  elAjuste.ajustedetalles.forEach((producto) => {
-    _AjusteDetalle.push(
-      {
-        reng_num: producto.reng_num,
-        ajue_num: producto.ajue_num,
-        co_art: producto.co_art.trim(),
-        art_des: producto.
-        tipo: producto.tipo})
-  });
-  return {
-    ajuste: _clearObject(elAjuste),
-    detalles: _AjusteDetalle
+function _clearObjectDetalle(_object: AjusteDetalle, withProductoNombre: boolean = false) {
+  try {
+    return {
+      keyId: _object.ajue_num,
+      ajue_num: _object.ajue_num,
+      reng_num: _object.reng_num,
+      dis_cen: _object.dis_cen,
+      tipo: _object.tipo.trim(),
+      articulo: {
+        co_art: _object.co_art.trim(),
+        art_des: !withProductoNombre ? '' : _object.producto.art_des.trim(),
+        total_art: _object.total_art,
+        uni_compra: _object.uni_compra.trim(),
+        suni_compr: _object.suni_compr.trim(),
+        uni_venta: _object.uni_venta.trim(),
+        suni_venta: _object.suni_venta.trim(),
+        stotal_art: _object.stotal_art,
+        cost_unit_om: _object.cost_unit_om,
+        cost_unit: _object.cost_unit,
+        cos_pro_un: _object.cos_pro_un,
+        cos_pro_om: _object.cos_pro_om,
+        ult_cos_om: _object.ult_cos_om,
+        total_uni: _object.total_uni,
+      },
+      feccom: _object.feccom,
+      numcom: _object.numcom,
+      nro_lote: _object.nro_lote.trim(),
+      fec_lote: _object.fec_lote,
+      pendiente2: _object.pendiente2,
+      tipo_doc2: _object.tipo_doc2,
+      reng_doc2: _object.reng_doc2,
+      num_doc2: _object.num_doc2,
+      mo_cant: _object.mo_cant,
+      gf_cant: _object.gf_cant,
+      mo_cant_om: _object.mo_cant_om,
+      gf_cant_om: _object.gf_cant_om,
+      estatus: {
+        aux01: _object.aux01,
+        aux02: _object.aux02.trim(),
+        produccion: _object.produccion,
+      },
+      rowguid: _object.rowguid
     };
-    // try {
-    //   const Id: string = req.params.keyId.trim();
-    //   let numRequest: number = 0;
-    //   if (!Id) {
-    //     return res.status(400).json(_clearObject({id: 0, name: '', active: false}));
-    //   }
-  
-    //   const losAjustes = await Ajuste.scope(req.query['scope']).findOne({
-    //     where: { ajue_num: Id},
-    //     include: [Sucursal, AjusteDetalle]
-    //   }).then((theObject) => {
-    //     if (theObject) {
-    //       numRequest = 200;
-    //       return {data: _clearObjectWithDetalle(theObject)};  
-    //     } else {
-    //       numRequest = 404;
-    //       return {data: {ajue_num: '0', name: '' }};
-    //     }
-    //   }).catch((err) => {
-    //     console.log(err);
-    //     res.status(500).json(_errorObject(err, '/'));
-    //   });
-  
-    //   res.status(numRequest).json(losAjustes);
-    // } catch (e) {
-    //   next(e);
-    // }
-
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 function _errorObject(_err, onfunction) {

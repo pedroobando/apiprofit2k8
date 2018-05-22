@@ -86,7 +86,7 @@ export class AjusteDetalle extends Model<AjusteDetalle> {
   @Column({
     type: DataType.CHAR(6)
   })
-  'suni_compra': string;
+  'suni_compr': string;
 
   @Default('')
   @AllowNull(false)
