@@ -4,7 +4,7 @@ import {
 } from "sequelize-typescript";
 
 import { Sucursal } from "./Sucursal";
-import { AjusteDet } from './AjusteDetalle';
+import { AjusteDetalle } from './AjusteDetalle';
 // import { Proveedor } from "./Proveedor";
 
 const _DATEPARSE = new Date();
@@ -244,14 +244,14 @@ export class Ajuste extends Model<Ajuste> {
   @BelongsTo(() => Sucursal, {foreignKey: 'co_sucu', targetKey: 'co_alma'})
   sucursal: Sucursal;
 
-  @BelongsToMany(() => AjusteDet, {foreignKey: 'ajue_num', targetKey: 'ajue_num'})
-  ajusteDetalle?: AjusteDet[];
+  // @BelongsToMany(() => AjusteDetalle, {foreignKey: 'ajue_num', targetKey: 'ajue_num'})
+  // ajusteDetalle?: AjusteDetalle[];
 
-  @BelongsToMany(() => Actor, () => MovieActor)
-  cast?: Actor[];
+  // @BelongsToMany(() => Actor, () => MovieActor)
+  // cast?: Actor[];
 
-  @BelongsToMany(() => Genre, () => MovieGenre)
-  genres?: Genre[];
+  // @BelongsToMany(() => Genre, () => MovieGenre)
+  // genres?: Genre[];
 
   // @BelongsTo(() => Proveedor, {foreignKey: 'co_prov', targetKey: 'co_prov'})
   // proveedor: ProductoCategoria;

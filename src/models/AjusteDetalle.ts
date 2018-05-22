@@ -17,7 +17,7 @@ const _ROWGUIDEXPORT =  '00000000-0000-0000-0000-000000000000';
   'produccion', 'rowguid' ]
 })
 @Table({tableName: 'reng_aju'})
-export class AjusteDet extends Model<AjusteDet> {
+export class AjusteDetalle extends Model<AjusteDetalle> {
 
   @PrimaryKey
   @Column({
@@ -265,7 +265,7 @@ export class AjusteDet extends Model<AjusteDet> {
   @BelongsTo(() => Producto, {foreignKey: 'co_art', targetKey: 'co_art'})
   producto: Producto;
   
-  static scope(name: string = 'defaultScope'): typeof AjusteDet {
+  static scope(name: string = 'defaultScope'): typeof AjusteDetalle {
     return super.scope.call(this, name);
   }
 }

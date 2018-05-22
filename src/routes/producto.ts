@@ -13,18 +13,14 @@ productos.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const order: string = !req.query.order ? 'ASC' : req.query.order.toUpperCase();
     const filtername: string = !req.query.filtername ? '' : req.query.filtername.toUpperCase();
-<<<<<<< HEAD
     const incluirAnulado: boolean = !req.query.incluiranulado ? false : (req.query.incluiranulado == 'true' ? true : false);
     
     
-=======
->>>>>>> 486bce34e9d29635fd7be9669099f3e4f970cca2
     const limitPage: number = isNaN(req.query.limit) ? paginateSize : parseInt(req.query.limit);
     const activePage: number = isNaN(req.query.page) ? 1 : parseInt(req.query.page);
     const offset2 = limitPage * (activePage - 1);
 
     const losProductos = await Producto.scope(req.query['scope']).findAndCountAll({
-<<<<<<< HEAD
       order: [['art_des', order]],
       limit: limitPage,
       offset: offset2,
@@ -38,21 +34,6 @@ productos.get('/', async (req: Request, res: Response, next: NextFunction) => {
       return _returnJson(_clearObjectAll(objectAll.rows),
         _paginate(activePage, totalPage, totalItems, showItem));
     });
-=======
-        order: [['art_des', order]],
-        limit: limitPage,
-        offset: offset2,
-        where: {art_des: {$like: `%${filtername}%`}},
-        include: [Sucursal, ProductoLinea, ProductoSubLinea, ProductoCategoria, Proveedor]
-      }).then((objectAll) => {
-        const totalItems: number = objectAll.count;
-        const totalPage: number = Math.ceil(objectAll.count / limitPage);
-        const showItem: number = (objectAll.rows.length);
-        // console.log(objectAll);
-        return _returnJson(_clearObjectAll(objectAll.rows),
-          _paginate(activePage, totalPage, totalItems, showItem));
-      });
->>>>>>> 486bce34e9d29635fd7be9669099f3e4f970cca2
     res.status(200).json(losProductos);
 
     // console.log(`limitPage: ${limitPage}`);
