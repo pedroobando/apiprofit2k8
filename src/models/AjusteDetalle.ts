@@ -5,6 +5,7 @@ import {
 
 import { Producto } from "./Producto";
 import { Ajuste } from "./Ajuste";
+import { Almacen } from "./Almacen";
 // import { Proveedor } from "./Proveedor";
 
 const _DATEPARSE = new Date();
@@ -31,13 +32,6 @@ export class AjusteDetalle extends Model<AjusteDetalle> {
     type: DataType.INTEGER
   })
   'ajue_num': number;
-
-  @AllowNull(false)
-  @Default(_DATEPARSE)
-  @Column({
-    type: DataType.DATE
-  })
-  'fecha': Date;
 
   @Default('')
   @AllowNull(true)
@@ -268,6 +262,10 @@ export class AjusteDetalle extends Model<AjusteDetalle> {
 
   @BelongsTo(() => Ajuste, {foreignKey: 'ajue_num', targetKey: 'ajue_num'})
   ajuste: Ajuste;
+
+  @BelongsTo(() => Almacen, {foreignKey: 'co_alma', targetKey: 'co_sub'})
+  almacen: Almacen;
+
 
   static scope(name: string = 'defaultScope'): typeof AjusteDetalle {
     return super.scope.call(this, name);

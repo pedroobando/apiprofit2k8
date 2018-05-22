@@ -3,6 +3,7 @@ import { Ajuste } from '../models/Ajuste';
 import { Sucursal } from '../models/Sucursal';
 import { AjusteDetalle } from '../models/AjusteDetalle';
 import { Producto } from '../models/Producto';
+import { Almacen } from '../models/Almacen';
 
 export const ajustes = Router();
 const paginateSize: number = 40;
@@ -76,7 +77,7 @@ ajustes.get('/detalles/:keyId', async (req: Request, res: Response, next: NextFu
     }
     const losAjustes = await AjusteDetalle.scope(req.query['scope']).findAndCountAll({
       where: { ajue_num: Id},
-      include: [Producto]
+      include: [Producto, Almacen]
     }).then((theObject) => {
       if (theObject) {
         numRequest = 200;
@@ -277,6 +278,10 @@ function _clearObjectDetalle(_object: AjusteDetalle, withProductoNombre: boolean
       reng_num: _object.reng_num,
       dis_cen: _object.dis_cen,
       tipo: _object.tipo.trim(),
+      almacen: {
+        co_alma: _object.co_alma.trim(),
+        des_sub: !withProductoNombre ? '' : _object.almacen.des_sub.trim(),
+      },
       articulo: {
         co_art: _object.co_art.trim(),
         art_des: !withProductoNombre ? '' : _object.producto.art_des.trim(),
