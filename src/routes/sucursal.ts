@@ -1,7 +1,7 @@
 import {Router, Request, Response, NextFunction} from 'express';
 import {Sucursal} from '../models/Sucursal';
 import {Almacen} from '../models/Almacen';
-import {Global} from '../routes/global';
+// import {Global} from '../routes/global';
 
 export const sucursals = Router();
 const paginateSize: number = 40;

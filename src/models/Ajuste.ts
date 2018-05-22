@@ -1,10 +1,11 @@
 import {
   Model, Table, BelongsToMany, Scopes, CreatedAt, UpdatedAt,
-  Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, BelongsTo, DefaultScope
+  Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, BelongsTo, DefaultScope, HasMany
 } from "sequelize-typescript";
 
 import { Sucursal } from "./Sucursal";
 import { AjusteDetalle } from './AjusteDetalle';
+import { ajustes } from "../routes/ajuste";
 // import { Proveedor } from "./Proveedor";
 
 const _DATEPARSE = new Date();
@@ -243,6 +244,9 @@ export class Ajuste extends Model<Ajuste> {
   
   @BelongsTo(() => Sucursal, {foreignKey: 'co_sucu', targetKey: 'co_alma'})
   sucursal: Sucursal;
+
+  @HasMany(() => AjusteDetalle, {foreignKey: 'ajue_num'})
+  ajustedetalles: AjusteDetalle;
 
   // @BelongsToMany(() => AjusteDetalle, {foreignKey: 'ajue_num', targetKey: 'ajue_num'})
   // ajusteDetalle?: AjusteDetalle[];

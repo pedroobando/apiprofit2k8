@@ -1,6 +1,7 @@
 import {Router, Request, Response, NextFunction} from 'express';
 import { Ajuste } from '../models/Ajuste';
 import { Sucursal } from '../models/Sucursal';
+import { AjusteDetalle } from '../models/AjusteDetalle';
 
 export const ajustes = Router();
 const paginateSize: number = 40;
@@ -45,11 +46,11 @@ ajustes.get('/:keyId', async (req: Request, res: Response, next: NextFunction) =
 
     const losAjustes = await Ajuste.scope(req.query['scope']).findOne({
       where: { ajue_num: Id},
-      include: [Sucursal]
+      include: [Sucursal, AjusteDetalle]
     }).then((theObject) => {
       if (theObject) {
         numRequest = 200;
-        return {data: _clearObject(theObject)};  
+        return {data: _clearObjectWithDetalle(theObject)};  
       } else {
         numRequest = 404;
         return {data: {ajue_num: '0', name: '' }};
@@ -182,9 +183,10 @@ function _clearObjectAll(_objectAll) {
 // 'campo1', 'campo2', 'campo3', 'campo4', 'campo5', 'campo6', 'campo7', 'campo8',
 // 'revisado', 'trasnfe', 'anulada', 'aux01', 'aux02', 'produccion', 'imp_num', 'fact_num', 'co_sucu', 'rowguid' ]
 
-function _clearObject(_object) {
+function _clearObject(_object: Ajuste) {
   return {
     keyId: _object.ajue_num,
+    ajue_num: _object.ajue_num,
     fecha: _object.fecha,
     motivo: _object.motivo.trim(),
     total: _object.total,
@@ -228,6 +230,51 @@ function _clearObject(_object) {
     },
     rowguid: _object.rowguid
   };
+}
+
+function _clearObjectWithDetalle(elNumAjuste: number) {
+  const _AjusteDetalle = [];
+  elAjuste.ajustedetalles.forEach((producto) => {
+    _AjusteDetalle.push(
+      {
+        reng_num: producto.reng_num,
+        ajue_num: producto.ajue_num,
+        co_art: producto.co_art.trim(),
+        art_des: producto.
+        tipo: producto.tipo})
+  });
+  return {
+    ajuste: _clearObject(elAjuste),
+    detalles: _AjusteDetalle
+    };
+    // try {
+    //   const Id: string = req.params.keyId.trim();
+    //   let numRequest: number = 0;
+    //   if (!Id) {
+    //     return res.status(400).json(_clearObject({id: 0, name: '', active: false}));
+    //   }
+  
+    //   const losAjustes = await Ajuste.scope(req.query['scope']).findOne({
+    //     where: { ajue_num: Id},
+    //     include: [Sucursal, AjusteDetalle]
+    //   }).then((theObject) => {
+    //     if (theObject) {
+    //       numRequest = 200;
+    //       return {data: _clearObjectWithDetalle(theObject)};  
+    //     } else {
+    //       numRequest = 404;
+    //       return {data: {ajue_num: '0', name: '' }};
+    //     }
+    //   }).catch((err) => {
+    //     console.log(err);
+    //     res.status(500).json(_errorObject(err, '/'));
+    //   });
+  
+    //   res.status(numRequest).json(losAjustes);
+    // } catch (e) {
+    //   next(e);
+    // }
+
 }
 
 function _errorObject(_err, onfunction) {

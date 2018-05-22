@@ -7,7 +7,7 @@ export const sequelize = new Sequelize({
   // username: 'postgres',
   // password: 'postgres',
   dialect: 'mssql',
-  database: 'GRASA_A',
+  database: 'GRASA_ADEMO',
   username: 'profit',
   password: 'profit',
   // host: 'grasacaccs.ddns.net',

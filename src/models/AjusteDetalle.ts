@@ -1,9 +1,10 @@
 import {
   Model, Table, BelongsToMany, Scopes, CreatedAt, UpdatedAt,
-  Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, BelongsTo, DefaultScope
+  Column, PrimaryKey, AllowNull, Default, Unique, IsUUID, DataType, BelongsTo, DefaultScope, ForeignKey
 } from "sequelize-typescript";
 
 import { Producto } from "./Producto";
+import { Ajuste } from "./Ajuste";
 // import { Proveedor } from "./Proveedor";
 
 const _DATEPARSE = new Date();
@@ -13,7 +14,7 @@ const _ROWGUIDEXPORT =  '00000000-0000-0000-0000-000000000000';
   attributes: ['ajue_num', 'reng_num', 'dis_cen', 'tipo', 'co_art', 'total_art', 'uni_compra',
   'stotal_art', 'suni_compr', 'co_alma', 'cost_unit_om', 'cost_unit', 'feccom', 'numcom', 'uni_venta', 'suni_venta',
   'cos_pro_un', 'ult_cos_om', 'cos_pro_om', 'total_uni', 'nro_lote', 'fec_lote', 'pendiente2',
-  'tipo_doc2', 'reng_doc2', 'num_doc2', 'aux01', 'aux02', 'mo_cant', 'gr_cant', 'mo_cant_om', 'gf_cant_om',
+  'tipo_doc2', 'reng_doc2', 'num_doc2', 'aux01', 'aux02', 'mo_cant', 'gf_cant', 'mo_cant_om', 'gf_cant_om',
   'produccion', 'rowguid' ]
 })
 @Table({tableName: 'reng_aju'})
@@ -23,13 +24,13 @@ export class AjusteDetalle extends Model<AjusteDetalle> {
   @Column({
     type: DataType.INTEGER
   })
-  'ajue_num': number;
+  'reng_num': number;
 
-  @PrimaryKey
+  @ForeignKey(() => Ajuste)
   @Column({
     type: DataType.INTEGER
   })
-  'reng_num': number;
+  'ajue_num': number;
 
   @AllowNull(false)
   @Default(_DATEPARSE)
@@ -264,7 +265,10 @@ export class AjusteDetalle extends Model<AjusteDetalle> {
   
   @BelongsTo(() => Producto, {foreignKey: 'co_art', targetKey: 'co_art'})
   producto: Producto;
-  
+
+  @BelongsTo(() => Ajuste, {foreignKey: 'ajue_num', targetKey: 'ajue_num'})
+  ajuste: Ajuste;
+
   static scope(name: string = 'defaultScope'): typeof AjusteDetalle {
     return super.scope.call(this, name);
   }
