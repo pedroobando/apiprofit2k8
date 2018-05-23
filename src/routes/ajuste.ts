@@ -68,7 +68,7 @@ ajustes.get('/:keyId', async (req: Request, res: Response, next: NextFunction) =
   }
 });
 
-ajustes.get('/detalles/:keyId', async (req: Request, res: Response, next: NextFunction) => {
+ajustes.get('/:keyId/detalles', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const Id: string = req.params.keyId.trim();
     let numRequest: number = 0;
