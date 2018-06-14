@@ -12,6 +12,7 @@ export const sequelize = new Sequelize({
   password: 'profit',
   // host: 'grasacaccs.ddns.net',
   host: 'grasacanetuno.ddns.net',
+  logging: false, // no muestra la instruccion sql por consola
   // host: 'grasacasatelca.ddns.net',
   // port: 1435,
   modelPaths: [__dirname + '/models']
