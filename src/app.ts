@@ -4,8 +4,8 @@ import * as errorhandler from 'strong-error-handler';
 // import {movies} from './routes/movies';
 // import {actors} from './routes/actors';
 import { Response, Request, NextFunction, ErrorRequestHandler } from "express";
-import * as favicon from 'serve-favicon';
-import * as path from 'path';
+// import * as favicon from 'serve-favicon';
+// import * as path from 'path';
 import {inicial} from './routes/database';
 import {almacens} from './routes/almacen';
 import {sucursals} from './routes/sucursal';
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json({limit: '5mb'}));
 
 // middleware favicon
-app.use(favicon(path.join(__dirname, '', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, '', 'favicon.ico')));
 
 // enable corse for all origins
 app.use((req, res, next) => {
